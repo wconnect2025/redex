@@ -311,6 +311,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Add Tracking Update
       </div>
+      <div class="nav-item" onclick="showTab('settings',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Branding &amp; Settings
+      </div>
     </nav>
     <div class="sidebar-footer">
       <div class="logout-btn" onclick="doLogout()">
@@ -539,6 +543,89 @@
       </div>
     </section>
 
+    <!-- ===== SETTINGS TAB ===== -->
+    <section class="tab-section" id="tab-settings">
+      <div class="page-header">
+        <h1>Branding &amp; Settings</h1>
+        <p>Customise your company name, colours, and contact details</p>
+      </div>
+
+      <div class="alert alert-success" id="settingsAlert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span id="settingsAlertMsg"></span></div>
+      <div class="alert alert-error"   id="settingsErr"  ><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="settingsErrMsg"></span></div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Brand Identity</span></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Logo — First Part <span style="font-weight:400;color:var(--muted);">(white)</span></label>
+              <input type="text" id="brandPart1" placeholder="Red" maxlength="30">
+            </div>
+            <div class="form-group">
+              <label>Logo — Second Part <span style="font-weight:400;color:var(--muted);">(accent colour)</span></label>
+              <input type="text" id="brandPart2" placeholder="Ex" maxlength="30">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" id="brandTagline" placeholder="Courier Services" maxlength="60">
+          </div>
+
+          <div style="margin-top:8px;padding:16px 20px;background:var(--bg);border-radius:10px;display:flex;align-items:center;gap:16px;">
+            <span style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Preview</span>
+            <span id="logoPreview" style="font-size:24px;font-weight:900;letter-spacing:-1px;color:var(--purple);">Red<span style="color:var(--orange);">Ex</span></span>
+            <span id="taglinePreview" style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:2px;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Colours</span></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Primary Colour</label>
+              <div style="display:flex;gap:10px;align-items:center;">
+                <input type="color" id="brandPrimary" value="#4D148C" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Primary')">
+                <input type="text" id="brandPrimaryHex" placeholder="#4D148C" maxlength="7" oninput="syncColorFromHex('Primary')" style="flex:1;font-family:monospace;letter-spacing:1px;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Accent Colour</label>
+              <div style="display:flex;gap:10px;align-items:center;">
+                <input type="color" id="brandAccent" value="#FF6600" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Accent')">
+                <input type="text" id="brandAccentHex" placeholder="#FF6600" maxlength="7" oninput="syncColorFromHex('Accent')" style="flex:1;font-family:monospace;letter-spacing:1px;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Contact Information</span></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Support Phone</label>
+              <input type="text" id="brandPhone" placeholder="+1 (800) 555-1234" maxlength="40">
+            </div>
+            <div class="form-group">
+              <label>Support Email</label>
+              <input type="email" id="brandEmail" placeholder="support@example.com" maxlength="80">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn-submit" id="saveSettingsBtn" onclick="saveSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Settings
+        </button>
+        <button class="btn-secondary" onclick="loadSettings()">Reset to Saved</button>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -657,7 +744,7 @@ function doLogout() {
 
 async function showApp() {
   document.getElementById('appShell').style.display = 'flex';
-  // Load data once, feed everything from the cache
+  await loadSettings();
   await loadAndRefresh();
 }
 
@@ -689,7 +776,7 @@ function showTab(id, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   if (el) el.classList.add('active');
-  const titles = { 'overview':'Overview', 'new-shipment':'New Shipment', 'all-shipments':'All Shipments', 'add-update':'Add Tracking Update' };
+  const titles = { 'overview':'Overview', 'new-shipment':'New Shipment', 'all-shipments':'All Shipments', 'add-update':'Add Tracking Update', 'settings':'Branding & Settings' };
   document.getElementById('topbarTitle').textContent = titles[id] || '';
   if (id === 'add-update') setDefaultTimestamp();
 }
@@ -1125,6 +1212,131 @@ function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+// ══════════════════════════════════════════════════════
+//  BRANDING & SETTINGS
+// ══════════════════════════════════════════════════════
+let currentBranding = {};
+
+async function loadSettings() {
+  try {
+    const res = await fetch('/api/settings');
+    if (res.ok) {
+      currentBranding = await res.json();
+      applyBranding(currentBranding);
+      populateSettingsForm(currentBranding);
+    }
+  } catch(e) {
+    console.warn('Could not load settings', e);
+  }
+}
+
+function applyBranding(s) {
+  const root = document.documentElement;
+  if (s.primaryColor) root.style.setProperty('--purple', s.primaryColor);
+  if (s.accentColor)  root.style.setProperty('--orange', s.accentColor);
+
+  const p1 = s.namePart1 || 'Red';
+  const p2 = s.namePart2 || 'Ex';
+
+  // Update sidebar logo
+  const sbl = document.querySelector('.sidebar-logo');
+  if (sbl) sbl.innerHTML = `${esc(p1)}<span>${esc(p2)}</span><span class="sidebar-badge">${esc(s.tagline || 'Admin Dashboard')}</span>`;
+
+  // Update login logo
+  const ll = document.querySelector('.login-logo');
+  if (ll) ll.innerHTML = `${esc(p1)}<span>${esc(p2)}</span>`;
+
+  // Update page title
+  document.title = `${p1}${p2} Admin Dashboard`;
+}
+
+function populateSettingsForm(s) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  set('brandPart1',      s.namePart1    || 'Red');
+  set('brandPart2',      s.namePart2    || 'Ex');
+  set('brandTagline',    s.tagline      || 'Courier Services');
+  set('brandPrimaryHex', s.primaryColor || '#4D148C');
+  set('brandAccentHex',  s.accentColor  || '#FF6600');
+  set('brandPhone',      s.phone        || '');
+  set('brandEmail',      s.email        || '');
+
+  const pp = document.getElementById('brandPrimary');
+  const pa = document.getElementById('brandAccent');
+  if (pp) pp.value = s.primaryColor || '#4D148C';
+  if (pa) pa.value = s.accentColor  || '#FF6600';
+
+  updateLogoPreview();
+}
+
+function syncColorFromPicker(which) {
+  const picker = document.getElementById('brand' + which);
+  const hex    = document.getElementById('brand' + which + 'Hex');
+  if (picker && hex) hex.value = picker.value;
+  updateLogoPreview();
+}
+
+function syncColorFromHex(which) {
+  const hex    = document.getElementById('brand' + which + 'Hex');
+  const picker = document.getElementById('brand' + which);
+  if (hex && picker && /^#[0-9a-fA-F]{6}$/.test(hex.value)) picker.value = hex.value;
+  updateLogoPreview();
+}
+
+function updateLogoPreview() {
+  const p1  = document.getElementById('brandPart1')?.value  || 'Red';
+  const p2  = document.getElementById('brandPart2')?.value  || 'Ex';
+  const tl  = document.getElementById('brandTagline')?.value || '';
+  const col = document.getElementById('brandAccentHex')?.value || '#FF6600';
+  const prv = document.getElementById('logoPreview');
+  const tprv= document.getElementById('taglinePreview');
+  if (prv)  prv.innerHTML = `${esc(p1)}<span style="color:${esc(col)};">${esc(p2)}</span>`;
+  if (tprv) tprv.textContent = tl;
+}
+
+async function saveSettings() {
+  const g = id => document.getElementById(id)?.value.trim() || '';
+  const settings = {
+    namePart1:    g('brandPart1')      || 'Red',
+    namePart2:    g('brandPart2')      || 'Ex',
+    tagline:      g('brandTagline')    || 'Courier Services',
+    primaryColor: g('brandPrimaryHex') || '#4D148C',
+    accentColor:  g('brandAccentHex')  || '#FF6600',
+    phone:        g('brandPhone'),
+    email:        g('brandEmail'),
+  };
+
+  if (!/^#[0-9a-fA-F]{6}$/.test(settings.primaryColor) || !/^#[0-9a-fA-F]{6}$/.test(settings.accentColor)) {
+    showAlert('settingsErr','settingsErrMsg','Please enter valid hex colours (e.g. #4D148C).','error');
+    return;
+  }
+
+  const btn = document.getElementById('saveSettingsBtn');
+  btn.innerHTML = '<span class="spinner"></span> Saving…';
+  btn.disabled  = true;
+
+  try {
+    const res = await api('/api/settings', { method: 'PUT', body: JSON.stringify(settings) });
+    if (res.ok) {
+      currentBranding = settings;
+      applyBranding(settings);
+      showAlert('settingsAlert','settingsAlertMsg','Branding saved successfully!','success');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showAlert('settingsErr','settingsErrMsg', err.error || 'Failed to save settings.','error');
+    }
+  } catch {
+    showAlert('settingsErr','settingsErrMsg','Network error.','error');
+  }
+
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Settings';
+  btn.disabled  = false;
+}
+
+// Live preview as user types in the settings form
+document.addEventListener('input', e => {
+  if (['brandPart1','brandPart2','brandTagline','brandAccentHex'].includes(e.target?.id)) updateLogoPreview();
+});
 
 function showAlert(alertId, msgId, msg, type) {
   const el  = document.getElementById(alertId);
