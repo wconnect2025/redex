@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RedEx Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --purple: #4D148C;
+    --purple-dark: #2d0a52;
+    --purple-light: #6b2aa8;
+    --orange: #FF6600;
+    --orange-light: #FF8533;
+    --blue: #0066B3;
+    --green: #16a34a;
+    --red: #dc2626;
+    --yellow: #d97706;
+    --bg: #f4f1f9;
+    --sidebar-w: 260px;
+    --card: #ffffff;
+    --border: #e8e8f0;
+    --text: #0f0f1e;
+    --text2: #4a4a68;
+    --muted: #8e8ea0;
+    --radius: 14px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.07);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+  /* ===== LOGIN ===== */
+  .login-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, #8e3bbf 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .login-box {
+    background: #fff; border-radius: 24px; padding: 48px 40px;
+    width: 420px; box-shadow: 0 32px 80px rgba(0,0,0,0.3);
+    animation: slideUp 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0)   scale(1);    }
+  }
+
+  .login-logo { font-size: 36px; font-weight: 900; color: var(--purple); letter-spacing: -2px; margin-bottom: 6px; }
+  .login-logo span { color: var(--orange); }
+  .login-sub  { font-size: 13px; color: var(--muted); margin-bottom: 36px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; }
+  .login-title { font-size: 22px; font-weight: 700; margin-bottom: 28px; color: var(--text); }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 14px 16px; border: 2px solid var(--border);
+    border-radius: 10px; font-size: 15px; font-family: inherit;
+    color: var(--text); background: #fafafa; outline: none; transition: all 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--purple); background: #fff;
+    box-shadow: 0 0 0 4px rgba(77,20,140,0.08);
+  }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  .btn-primary {
+    width: 100%; padding: 16px; background: var(--purple);
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(77,20,140,0.35); }
+  .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
+
+  .login-error { color: var(--red); font-size: 13px; font-weight: 500; margin-top: 12px; display: none; }
+  .login-hint  { color: var(--muted); font-size: 12px; margin-top: 20px; text-align: center; }
+  .login-hint strong { color: var(--purple); }
+
+  /* ===== LAYOUT ===== */
+  .app { display: flex; min-height: 100vh; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    width: var(--sidebar-w); background: var(--purple-dark);
+    position: fixed; top: 0; left: 0; bottom: 0;
+    display: flex; flex-direction: column; z-index: 100;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+  }
+
+  .sidebar-logo { padding: 28px 24px 20px; font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -1.5px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 8px; }
+  .sidebar-logo span { color: var(--orange); }
+  .sidebar-badge { display: block; font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 24px; color: rgba(255,255,255,0.65);
+    cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 500;
+    border-left: 3px solid transparent; margin: 2px 0;
+  }
+  .nav-item:hover  { background: rgba(255,255,255,0.07); color: #fff; }
+  .nav-item.active { background: rgba(255,255,255,0.1);  color: #fff; border-left-color: var(--orange); }
+  .nav-item svg    { width: 18px; height: 18px; flex-shrink: 0; }
+
+  .sidebar-footer { margin-top: auto; padding: 20px 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .logout-btn { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+  .logout-btn:hover { color: #fff; }
+
+  /* ===== MAIN ===== */
+  .main { margin-left: var(--sidebar-w); flex: 1; padding: 32px 40px; max-width: calc(100vw - var(--sidebar-w)); }
+
+  .page-header { margin-bottom: 32px; }
+  .page-header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .page-header p  { font-size: 14px; color: var(--muted); }
+
+  .tab-section        { display: none; }
+  .tab-section.active { display: block; }
+
+  /* ===== STATS ===== */
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-bottom: 32px; }
+
+  .stat-card { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
+  .stat-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+  .stat-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stat-icon svg { width: 24px; height: 24px; }
+  .stat-icon.purple { background: rgba(77,20,140,0.1);  } .stat-icon.purple svg { stroke: var(--purple); }
+  .stat-icon.orange { background: rgba(255,102,0,0.1);  } .stat-icon.orange svg { stroke: var(--orange); }
+  .stat-icon.green  { background: rgba(22,163,74,0.1);  } .stat-icon.green  svg { stroke: var(--green);  }
+  .stat-icon.blue   { background: rgba(0,102,179,0.1);  } .stat-icon.blue   svg { stroke: var(--blue);   }
+
+  .stat-info { flex: 1; }
+  .stat-num  { font-size: 28px; font-weight: 800; letter-spacing: -1px; color: var(--text); }
+  .stat-lbl  { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* ===== CARDS ===== */
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 28px; overflow: hidden; }
+  .card-header { padding: 20px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .card-title  { font-size: 16px; font-weight: 700; color: var(--text); }
+  .card-body   { padding: 28px; }
+
+  /* ===== FORM GRID ===== */
+  .form-row   { display: grid; grid-template-columns: 1fr 1fr;     gap: 20px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .full { grid-column: 1 / -1; }
+
+  /* ===== TRACKING NUMBER BOX ===== */
+  .tracking-gen-box { display: flex; align-items: center; gap: 12px; background: var(--bg); border: 2px dashed var(--purple); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .tracking-gen-box .tn { font-size: 22px; font-weight: 800; color: var(--purple); letter-spacing: 2px; flex: 1; }
+  .btn-icon   { padding: 10px 16px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-regen  { background: rgba(77,20,140,0.08); color: var(--purple); }
+  .btn-regen:hover { background: rgba(77,20,140,0.15); }
+  .btn-copy   { background: var(--purple); color: #fff; }
+  .btn-copy:hover { background: var(--purple-dark); }
+  .btn-copy.copied { background: var(--green); }
+
+  /* ===== BUTTONS ===== */
+  .btn-submit {
+    padding: 14px 36px; background: var(--purple); color: #fff; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(77,20,140,0.3); }
+  .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+  .btn-submit svg { width: 18px; height: 18px; }
+
+  .btn-danger { padding: 8px 16px; background: rgba(220,38,38,0.1); color: var(--red); border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-danger:hover { background: var(--red); color: #fff; }
+
+  .btn-edit { padding: 8px 16px; background: rgba(77,20,140,0.08); color: var(--purple); border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-edit:hover { background: var(--purple); color: #fff; }
+
+  .btn-secondary { padding: 14px 28px; background: rgba(77,20,140,0.08); color: var(--purple); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { background: rgba(77,20,140,0.15); }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; background: #fafafa; border-bottom: 1px solid var(--border); }
+  tbody td { padding: 14px 16px; font-size: 13.5px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(77,20,140,0.02); }
+  .tn-cell { font-weight: 700; color: var(--purple); font-family: monospace; font-size: 14px; letter-spacing: 1px; }
+
+  /* ===== STATUS BADGES ===== */
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; font-size: 11.5px; font-weight: 700; }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  .badge-placed     { background: rgba(0,102,179,0.1);  color: var(--blue);   } .badge-placed::before     { background: var(--blue);   }
+  .badge-processing { background: rgba(217,119,6,0.1);  color: var(--yellow); } .badge-processing::before { background: var(--yellow); }
+  .badge-transit    { background: rgba(77,20,140,0.1);  color: var(--purple); } .badge-transit::before    { background: var(--purple); animation: blink 1.5s infinite; }
+  .badge-delivery   { background: rgba(255,102,0,0.1);  color: var(--orange); } .badge-delivery::before   { background: var(--orange); animation: blink 1s infinite;   }
+  .badge-delivered  { background: rgba(22,163,74,0.1);  color: var(--green);  } .badge-delivered::before  { background: var(--green);  }
+  .badge-exception  { background: rgba(220,38,38,0.1);  color: var(--red);    } .badge-exception::before  { background: var(--red);    }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ===== SEARCH ===== */
+  .search-row   { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
+  .search-input { flex: 1; padding: 11px 16px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: all 0.2s; }
+  .search-input:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(77,20,140,0.08); }
+
+  /* ===== ALERTS ===== */
+  .alert { padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; margin-bottom: 20px; display: none; align-items: center; gap: 10px; }
+  .alert.show { display: flex; }
+  .alert-success { background: rgba(22,163,74,0.1);  color: var(--green); border: 1px solid rgba(22,163,74,0.2); }
+  .alert-error   { background: rgba(220,38,38,0.1);  color: var(--red);   border: 1px solid rgba(220,38,38,0.2); }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state svg { width: 56px; height: 56px; stroke: var(--border); margin-bottom: 16px; }
+  .empty-state p { font-size: 15px; font-weight: 500; }
+
+  /* ===== OVERVIEW GRID ===== */
+  .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* ===== UPDATE LOG ===== */
+  .update-timeline { display: flex; flex-direction: column; gap: 0; }
+  .update-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .update-item:last-child { border-bottom: none; }
+  .update-dot      { width: 10px; height: 10px; border-radius: 50%; background: var(--purple); flex-shrink: 0; margin-top: 5px; }
+  .update-info     { flex: 1; }
+  .update-status   { font-weight: 700; font-size: 14px; color: var(--text); }
+  .update-location { font-size: 13px; color: var(--text2); margin-top: 2px; }
+  .update-time     { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .update-note     { font-size: 12.5px; color: var(--muted); margin-top: 4px; font-style: italic; }
+
+  /* ===== MODALS ===== */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 20px; padding: 36px; width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.25); animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  .modal-header  { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .modal-title   { font-size: 18px; font-weight: 700; }
+  .modal-close   { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; padding: 4px; }
+  .modal-close:hover { color: var(--text); }
+  .modal-footer  { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+  /* ===== TOPBAR ===== */
+  .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 40px; margin: -32px -40px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-title  { font-size: 18px; font-weight: 700; }
+  .topbar-user   { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text2); }
+  .topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+
+  /* ===== SELECT SHIPMENT (Update tab) ===== */
+  .shipment-select-list { max-height: 200px; overflow-y: auto; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 16px; }
+  .shipment-select-item { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  .shipment-select-item:last-child { border-bottom: none; }
+  .shipment-select-item:hover    { background: rgba(77,20,140,0.04); }
+  .shipment-select-item.selected { background: rgba(77,20,140,0.07); }
+  .shipment-select-item .ssi-tn   { font-weight: 700; color: var(--purple); font-family: monospace; font-size: 14px; }
+  .shipment-select-item .ssi-info { font-size: 12px; color: var(--muted); }
+
+  /* ===== LOADING SPINNER ===== */
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  .spinner-dark { border-color: rgba(77,20,140,0.2); border-top-color: var(--purple); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== SKELETON LOADER ===== */
+  .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 6px; }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  @media (max-width: 1100px) { .stats-row { grid-template-columns: 1fr 1fr; } .overview-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 768px)  { .sidebar { transform: translateX(-100%); } .main { margin-left: 0; padding: 20px; } .form-row, .form-row-3 { grid-template-columns: 1fr; } .stats-row { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">Red<span>Ex</span></div>
+    <div class="login-sub">Admin Portal</div>
+    <div class="login-title">Sign in to your dashboard</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+    <div class="login-hint">Default password: <strong>redex2025</strong></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app" id="appShell" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">Red<span>Ex</span><span class="sidebar-badge">Admin Dashboard</span></div>
+    <nav>
+      <div class="nav-item active" onclick="showTab('overview',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </div>
+      <div class="nav-item" onclick="showTab('new-shipment',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        New Shipment
+      </div>
+      <div class="nav-item" onclick="showTab('all-shipments',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        All Shipments
+      </div>
+      <div class="nav-item" onclick="showTab('add-update',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Add Tracking Update
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="logout-btn" onclick="doLogout()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Overview</div>
+      <div class="topbar-user">
+        <span>Administrator</span>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW TAB ===== -->
+    <section class="tab-section active" id="tab-overview">
+      <div class="page-header">
+        <h1>Dashboard Overview</h1>
+        <p>Real-time summary of all shipments</p>
+      </div>
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="skeleton" style="width:52px;height:52px;border-radius:12px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="height:28px;width:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:100px;"></div></div></div>
+        <div class="stat-card"><div class="skeleton" style="width:52px;height:52px;border-radius:12px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="height:28px;width:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:100px;"></div></div></div>
+        <div class="stat-card"><div class="skeleton" style="width:52px;height:52px;border-radius:12px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="height:28px;width:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:100px;"></div></div></div>
+        <div class="stat-card"><div class="skeleton" style="width:52px;height:52px;border-radius:12px;flex-shrink:0;"></div><div style="flex:1;"><div class="skeleton" style="height:28px;width:60px;margin-bottom:8px;"></div><div class="skeleton" style="height:14px;width:100px;"></div></div></div>
+      </div>
+      <div class="overview-grid">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Recent Shipments</span>
+            <button class="btn-secondary" style="padding:8px 16px;font-size:13px;" onclick="showTab('all-shipments',document.querySelector('[onclick*=all-shipments]'))">View All</button>
+          </div>
+          <div class="card-body" style="padding:0;" id="recentShipments">
+            <div class="empty-state"><div class="spinner spinner-dark"></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Quick Actions</span></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
+            <button class="btn-submit" style="width:100%;justify-content:center;" onclick="showTab('new-shipment',document.querySelector('[onclick*=new-shipment]'))">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Create New Shipment
+            </button>
+            <button class="btn-secondary" style="width:100%;padding:14px;font-size:15px;" onclick="showTab('add-update',document.querySelector('[onclick*=add-update]'))">Update Tracking Info</button>
+            <a href="redex.html" target="_blank" style="text-decoration:none;">
+              <button class="btn-secondary" style="width:100%;padding:14px;font-size:15px;">View Public Site</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEW SHIPMENT TAB ===== -->
+    <section class="tab-section" id="tab-new-shipment">
+      <div class="page-header">
+        <h1>Create New Shipment</h1>
+        <p>Fill in the details below — a tracking number will be auto-generated</p>
+      </div>
+
+      <div class="alert alert-success" id="createAlert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span id="createAlertMsg"></span></div>
+      <div class="alert alert-error"   id="createErr"  ><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="createErrMsg"></span></div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Tracking Number</span></div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Auto-generated. Copy and share this with the recipient.</p>
+          <div class="tracking-gen-box">
+            <span class="tn" id="generatedTN">RDX000000000000</span>
+            <button class="btn-icon btn-regen" onclick="regenTN()">&#8635; New</button>
+            <button class="btn-icon btn-copy" id="copyBtn" onclick="copyTN()">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Sender Information</span></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Sender Name *</label><input type="text" id="senderName" placeholder="Full name"></div>
+            <div class="form-group"><label>Sender Phone</label><input type="text" id="senderPhone" placeholder="+1 234 567 8900"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Sender Address *</label><input type="text" id="senderAddress" placeholder="Street address"></div>
+            <div class="form-group"><label>Sender City / Country *</label><input type="text" id="senderCity" placeholder="City, Country"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recipient Information</span></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group"><label>Recipient Name *</label><input type="text" id="recipientName" placeholder="Full name"></div>
+            <div class="form-group"><label>Recipient Phone</label><input type="text" id="recipientPhone" placeholder="+1 234 567 8900"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Recipient Address *</label><input type="text" id="recipientAddress" placeholder="Street address"></div>
+            <div class="form-group"><label>Recipient City / Country *</label><input type="text" id="recipientCity" placeholder="City, Country"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Package Details</span></div>
+        <div class="card-body">
+          <div class="form-row-3">
+            <div class="form-group"><label>Description *</label><input type="text" id="pkgDesc" placeholder="e.g. Electronics, Clothing"></div>
+            <div class="form-group"><label>Weight (kg)</label><input type="number" id="pkgWeight" placeholder="0.5" step="0.1" min="0"></div>
+            <div class="form-group"><label>Service Type</label>
+              <select id="serviceType"><option value="Express">Express</option><option value="Standard" selected>Standard</option><option value="Economy">Economy</option><option value="Overnight">Overnight</option></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Estimated Delivery Date *</label><input type="date" id="etaDate"></div>
+            <div class="form-group"><label>Origin Location *</label><input type="text" id="originLocation" placeholder="e.g. Lagos, Nigeria — Sorting Facility"></div>
+          </div>
+          <div class="form-group"><label>Notes / Special Instructions</label><textarea id="pkgNotes" placeholder="Fragile, handle with care..."></textarea></div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <button class="btn-submit" id="createBtn" onclick="createShipment()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Create Shipment
+        </button>
+        <button class="btn-secondary" onclick="resetCreateForm()">Clear Form</button>
+      </div>
+    </section>
+
+    <!-- ===== ALL SHIPMENTS TAB ===== -->
+    <section class="tab-section" id="tab-all-shipments">
+      <div class="page-header">
+        <h1>All Shipments</h1>
+        <p>Manage and view all tracked packages</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Shipments</span>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="statusFilter" onchange="applyFilters()" style="padding:8px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;">
+              <option value="">All Statuses</option>
+              <option value="Order Placed">Order Placed</option>
+              <option value="Processing">Processing</option>
+              <option value="In Transit">In Transit</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Exception">Exception</option>
+            </select>
+            <button class="btn-submit" style="padding:10px 20px;font-size:13px;" onclick="showTab('new-shipment',document.querySelector('[onclick*=new-shipment]'))">+ New</button>
+          </div>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="search-row" style="padding:16px 20px;padding-bottom:0;">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by tracking #, name, or location…" oninput="applyFilters()">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tracking #</th><th>Sender</th><th>Recipient</th><th>Service</th><th>Status</th><th>Current Location</th><th>ETA</th><th>Actions</th></tr></thead>
+              <tbody id="shipmentsBody"></tbody>
+            </table>
+          </div>
+          <div id="shipmentsEmpty" class="empty-state" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            <p>No shipments found.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ADD UPDATE TAB ===== -->
+    <section class="tab-section" id="tab-add-update">
+      <div class="page-header">
+        <h1>Add Tracking Update</h1>
+        <p>Update the location and status of an existing shipment</p>
+      </div>
+
+      <div class="alert alert-success" id="updateAlert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span id="updateAlertMsg"></span></div>
+      <div class="alert alert-error"   id="updateErr"  ><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="updateErrMsg"></span></div>
+
+      <div class="form-row" style="align-items:flex-start;">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header"><span class="card-title">Select Shipment</span></div>
+          <div class="card-body">
+            <input type="text" class="search-input" id="updateSearchInput" placeholder="Search tracking # or name…" oninput="filterUpdateList()" style="margin-bottom:14px;">
+            <div class="shipment-select-list" id="updateShipmentList"></div>
+            <div id="selectedShipmentInfo" style="display:none;margin-top:16px;padding:14px;background:rgba(77,20,140,0.05);border-radius:10px;border:1px solid rgba(77,20,140,0.15);">
+              <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Selected</div>
+              <div id="selectedTNDisplay" style="font-size:18px;font-weight:800;color:var(--purple);font-family:monospace;letter-spacing:1px;"></div>
+              <div id="selectedRecipDisplay" style="font-size:13px;color:var(--text2);margin-top:4px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header"><span class="card-title">Update Details</span></div>
+          <div class="card-body">
+            <div class="form-group"><label>New Status *</label>
+              <select id="newStatus">
+                <option value="">— Select status —</option>
+                <option value="Order Placed">Order Placed</option>
+                <option value="Processing">Processing</option>
+                <option value="In Transit">In Transit</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Exception">Exception — Delivery Issue</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Current Location *</label><input type="text" id="newLocation" placeholder="e.g. Heathrow Airport, London, UK"></div>
+            <div class="form-group"><label>Description / Note</label><textarea id="newNote" placeholder="e.g. Package cleared customs…" style="min-height:80px;"></textarea></div>
+            <div class="form-group"><label>Timestamp</label><input type="datetime-local" id="newTimestamp"></div>
+            <button class="btn-submit" id="updateBtn" onclick="addTrackingUpdate()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Save Update
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="selectedShipmentHistory" style="display:none;">
+        <div class="card-header"><span class="card-title">Update History</span><span id="historyTN" style="font-size:13px;color:var(--muted);font-family:monospace;"></span></div>
+        <div class="card-body"><div class="update-timeline" id="historyTimeline"></div></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== VIEW MODAL ===== -->
+<div class="modal-overlay" id="viewModal">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title" id="viewModalTitle">Shipment Details</span><button class="modal-close" onclick="closeModal('viewModal')">&times;</button></div>
+    <div id="viewModalBody"></div>
+    <div class="modal-footer"><button class="btn-secondary" onclick="closeModal('viewModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- ===== DELETE MODAL ===== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header"><span class="modal-title">Delete Shipment</span><button class="modal-close" onclick="closeModal('deleteModal')">&times;</button></div>
+    <p style="font-size:15px;color:var(--text2);line-height:1.6;">Are you sure you want to delete shipment <strong id="deleteTNLabel"></strong>? This cannot be undone.</p>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn" style="padding:12px 24px;font-size:14px;" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════
+let adminKey         = '';
+let shipmentsCache   = null;
+let allShipments     = [];   // holds whatever we last loaded, for filter/search
+let selectedUpdateTN = null;
+let pendingDeleteTN  = null;
+let currentTN        = '';
+
+// ════════════════════════════════════════════════════════
+//  API HELPER
+// ════════════════════════════════════════════════════════
+function api(path, opts = {}) {
+  return fetch(path, {
+    ...opts,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Key': adminKey,
+      ...(opts.headers || {}),
+    },
+  });
+}
+
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('redex_admin_key');
+  if (saved) {
+    adminKey = saved;
+    // Silently verify the saved key still works
+    api('/api/shipments')
+      .then(r => { if (r.ok) showApp(); else clearSession(); })
+      .catch(clearSession);
+  }
+  regenTN();
+  setDefaultTimestamp();
+  setDefaultETA();
+});
+
+function clearSession() {
+  sessionStorage.removeItem('redex_admin_key');
+  adminKey = '';
+}
+
+// ════════════════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════════════════
+async function doLogin() {
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!pass) return;
+
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/api/shipments', {
+      headers: { 'X-Admin-Key': pass, 'Content-Type': 'application/json' },
+    });
+
+    if (res.ok) {
+      adminKey = pass;
+      sessionStorage.setItem('redex_admin_key', pass);
+      document.getElementById('loginOverlay').style.display = 'none';
+      showApp();
+    } else {
+      const el = document.getElementById('loginError');
+      el.textContent = res.status === 401
+        ? 'Incorrect password. Try again.'
+        : 'Cannot reach the API. Make sure this is deployed on Cloudflare Pages.';
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 4000);
+    }
+  } catch {
+    const el = document.getElementById('loginError');
+    el.textContent = 'Network error — deploy to Cloudflare Pages or run locally with: npx wrangler pages dev';
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 6000);
+  }
+
+  btn.innerHTML = 'Sign In';
+  btn.disabled = false;
+}
+
+function doLogout() {
+  clearSession();
+  location.reload();
+}
+
+async function showApp() {
+  document.getElementById('appShell').style.display = 'flex';
+  // Load data once, feed everything from the cache
+  await loadAndRefresh();
+}
+
+// ════════════════════════════════════════════════════════
+//  DATA — single fetch, everything else reads from cache
+// ════════════════════════════════════════════════════════
+async function loadAndRefresh() {
+  try {
+    const res = await api('/api/shipments');
+    if (!res.ok) throw new Error(res.status);
+    shipmentsCache = await res.json();
+    allShipments   = shipmentsCache;
+  } catch(e) {
+    console.error('Failed to load shipments', e);
+    shipmentsCache = [];
+    allShipments   = [];
+  }
+  renderStats();
+  renderRecentShipments();
+  renderAllShipments();
+  renderUpdateList();
+}
+
+// ════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════
+function showTab(id, el) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = { 'overview':'Overview', 'new-shipment':'New Shipment', 'all-shipments':'All Shipments', 'add-update':'Add Tracking Update' };
+  document.getElementById('topbarTitle').textContent = titles[id] || '';
+  if (id === 'add-update') setDefaultTimestamp();
+}
+
+// ════════════════════════════════════════════════════════
+//  TRACKING NUMBER
+// ════════════════════════════════════════════════════════
+function genTN() {
+  const ts  = Date.now().toString().slice(-9);
+  const rnd = Math.floor(Math.random() * 100).toString().padStart(2,'0');
+  return 'RDX' + ts + rnd;
+}
+function regenTN() {
+  currentTN = genTN();
+  document.getElementById('generatedTN').textContent = currentTN;
+  const cb = document.getElementById('copyBtn');
+  cb.textContent = 'Copy';
+  cb.className = 'btn-icon btn-copy';
+}
+function copyTN() {
+  navigator.clipboard.writeText(currentTN).catch(() => {});
+  const cb = document.getElementById('copyBtn');
+  cb.textContent = 'Copied!';
+  cb.className = 'btn-icon btn-copy copied';
+  setTimeout(() => { cb.textContent = 'Copy'; cb.className = 'btn-icon btn-copy'; }, 2000);
+}
+
+function setDefaultTimestamp() {
+  const el = document.getElementById('newTimestamp');
+  if (!el) return;
+  const now   = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  el.value = local.toISOString().slice(0, 16);
+}
+function setDefaultETA() {
+  const el = document.getElementById('etaDate');
+  if (!el) return;
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  el.value = d.toISOString().split('T')[0];
+}
+
+// ════════════════════════════════════════════════════════
+//  CREATE SHIPMENT
+// ════════════════════════════════════════════════════════
+async function createShipment() {
+  const g = id => document.getElementById(id).value.trim();
+  const required = {
+    'Sender name':       g('senderName'),
+    'Sender address':    g('senderAddress'),
+    'Sender city':       g('senderCity'),
+    'Recipient name':    g('recipientName'),
+    'Recipient address': g('recipientAddress'),
+    'Recipient city':    g('recipientCity'),
+    'Description':       g('pkgDesc'),
+    'Origin location':   g('originLocation'),
+    'Estimated delivery':g('etaDate'),
+  };
+  const missing = Object.entries(required).filter(([,v]) => !v).map(([k]) => k);
+  if (missing.length) { showAlert('createErr','createErrMsg','Please fill in: ' + missing.join(', '),'error'); return; }
+
+  const shipment = {
+    trackingNumber:    currentTN,
+    senderName:        g('senderName'),
+    senderPhone:       g('senderPhone'),
+    senderAddress:     g('senderAddress'),
+    senderCity:        g('senderCity'),
+    recipientName:     g('recipientName'),
+    recipientPhone:    g('recipientPhone'),
+    recipientAddress:  g('recipientAddress'),
+    recipientCity:     g('recipientCity'),
+    description:       g('pkgDesc'),
+    weight:            g('pkgWeight') || 'N/A',
+    serviceType:       g('serviceType'),
+    estimatedDelivery: g('etaDate'),
+    notes:             g('pkgNotes'),
+    createdAt:         new Date().toISOString(),
+    updates: [{
+      timestamp: new Date().toISOString(),
+      status:    'Order Placed',
+      location:  g('originLocation'),
+      note:      'Shipment created. Package received at origin facility.',
+    }],
+  };
+
+  const btn = document.getElementById('createBtn');
+  btn.innerHTML = '<span class="spinner"></span> Creating…';
+  btn.disabled  = true;
+
+  try {
+    const res = await api('/api/shipments', { method: 'POST', body: JSON.stringify(shipment) });
+    if (res.ok) {
+      showAlert('createAlert','createAlertMsg',`Shipment created! Tracking number: ${currentTN}`,'success');
+      resetCreateForm();
+      shipmentsCache = null;
+      await loadAndRefresh();
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showAlert('createErr','createErrMsg', err.error || 'Failed to create shipment.','error');
+    }
+  } catch {
+    showAlert('createErr','createErrMsg','Network error. Check your connection.','error');
+  }
+
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Create Shipment';
+  btn.disabled  = false;
+}
+
+function resetCreateForm() {
+  ['senderName','senderPhone','senderAddress','senderCity','recipientName','recipientPhone',
+   'recipientAddress','recipientCity','pkgDesc','pkgWeight','pkgNotes','originLocation'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('serviceType').value = 'Standard';
+  setDefaultETA();
+  regenTN();
+}
+
+// ════════════════════════════════════════════════════════
+//  RENDER STATS
+// ════════════════════════════════════════════════════════
+function renderStats() {
+  const s = allShipments;
+  const total     = s.length;
+  const inTransit = s.filter(x => latestStatus(x) === 'In Transit').length;
+  const delivered = s.filter(x => latestStatus(x) === 'Delivered').length;
+  const pending   = s.filter(x => ['Order Placed','Processing'].includes(latestStatus(x))).length;
+
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+      <div class="stat-info"><div class="stat-num">${total}</div><div class="stat-lbl">Total Shipments</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <div class="stat-info"><div class="stat-num">${inTransit}</div><div class="stat-lbl">In Transit</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="stat-info"><div class="stat-num">${delivered}</div><div class="stat-lbl">Delivered</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-info"><div class="stat-num">${pending}</div><div class="stat-lbl">Pending</div></div>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+//  RENDER RECENT
+// ════════════════════════════════════════════════════════
+function renderRecentShipments() {
+  const el = document.getElementById('recentShipments');
+  const recent = allShipments.slice(0, 6);
+  if (!recent.length) {
+    el.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg><p>No shipments yet.</p></div>';
+    return;
+  }
+  el.innerHTML = `<table><thead><tr><th>Tracking #</th><th>Recipient</th><th>Status</th></tr></thead><tbody>
+    ${recent.map(s => `<tr>
+      <td class="tn-cell">${s.trackingNumber}</td>
+      <td>${esc(s.recipientName)}</td>
+      <td>${statusBadge(latestStatus(s))}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+// ════════════════════════════════════════════════════════
+//  RENDER ALL SHIPMENTS TABLE
+// ════════════════════════════════════════════════════════
+function renderAllShipments() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const q  = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  const sf = document.getElementById('statusFilter')?.value || '';
+
+  const filtered = allShipments.filter(s => {
+    const status   = latestStatus(s);
+    const matchSt  = !sf || status === sf;
+    const matchQ   = !q  || [s.trackingNumber, s.senderName, s.recipientName, latestLocation(s)].some(v => v.toLowerCase().includes(q));
+    return matchSt && matchQ;
+  });
+
+  const tbody = document.getElementById('shipmentsBody');
+  const empty = document.getElementById('shipmentsEmpty');
+
+  if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(s => `
+    <tr>
+      <td class="tn-cell">${s.trackingNumber}</td>
+      <td><div style="font-weight:600;">${esc(s.senderName)}</div><div style="font-size:11.5px;color:var(--muted);">${esc(s.senderCity)}</div></td>
+      <td><div style="font-weight:600;">${esc(s.recipientName)}</div><div style="font-size:11.5px;color:var(--muted);">${esc(s.recipientCity)}</div></td>
+      <td><span style="font-size:12px;font-weight:600;color:var(--text2);">${esc(s.serviceType)}</span></td>
+      <td>${statusBadge(latestStatus(s))}</td>
+      <td style="font-size:12.5px;max-width:160px;">${esc(latestLocation(s))}</td>
+      <td style="font-size:12.5px;">${fmtDate(s.estimatedDelivery)}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-edit"   onclick="viewShipment('${s.trackingNumber}')">View</button>
+          <button class="btn-edit"   onclick="goUpdate('${s.trackingNumber}')">Update</button>
+          <button class="btn-danger" onclick="deleteShipment('${s.trackingNumber}')">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  RENDER UPDATE LIST
+// ════════════════════════════════════════════════════════
+function renderUpdateList() {
+  filterUpdateList();
+}
+
+function filterUpdateList() {
+  const q    = (document.getElementById('updateSearchInput')?.value || '').toLowerCase();
+  const list = document.getElementById('updateShipmentList');
+  if (!list) return;
+
+  const filtered = allShipments.filter(s => !q || [s.trackingNumber, s.senderName, s.recipientName].some(v => v.toLowerCase().includes(q)));
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state" style="padding:24px;"><p style="font-size:13px;">No shipments found.</p></div>'; return; }
+
+  list.innerHTML = filtered.map(s => `
+    <div class="shipment-select-item ${selectedUpdateTN === s.trackingNumber ? 'selected' : ''}" onclick="selectForUpdate('${s.trackingNumber}')">
+      <div>
+        <div class="ssi-tn">${s.trackingNumber}</div>
+        <div class="ssi-info">${esc(s.recipientName)} &rarr; ${esc(s.recipientCity)} &nbsp;|&nbsp; ${statusBadge(latestStatus(s))}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectForUpdate(tn) {
+  selectedUpdateTN = tn;
+  filterUpdateList();
+  const s = allShipments.find(x => x.trackingNumber === tn);
+  if (!s) return;
+  document.getElementById('selectedShipmentInfo').style.display = 'block';
+  document.getElementById('selectedTNDisplay').textContent  = tn;
+  document.getElementById('selectedRecipDisplay').textContent = `To: ${s.recipientName} — ${s.recipientCity}`;
+  renderHistory(s);
+}
+
+function renderHistory(s) {
+  const histCard = document.getElementById('selectedShipmentHistory');
+  const timeline = document.getElementById('historyTimeline');
+  document.getElementById('historyTN').textContent = s.trackingNumber;
+  histCard.style.display = 'block';
+  if (!s.updates?.length) { timeline.innerHTML = '<p style="color:var(--muted);font-size:14px;">No updates yet.</p>'; return; }
+  timeline.innerHTML = [...s.updates].reverse().map(u => `
+    <div class="update-item">
+      <div class="update-dot"></div>
+      <div class="update-info">
+        <div class="update-status">${statusBadge(u.status)}</div>
+        <div class="update-location">${esc(u.location)}</div>
+        ${u.note ? `<div class="update-note">${esc(u.note)}</div>` : ''}
+        <div class="update-time">${fmtDateTime(u.timestamp)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  ADD TRACKING UPDATE
+// ════════════════════════════════════════════════════════
+async function addTrackingUpdate() {
+  if (!selectedUpdateTN) { showAlert('updateErr','updateErrMsg','Please select a shipment first.','error'); return; }
+
+  const status   = document.getElementById('newStatus').value;
+  const location = document.getElementById('newLocation').value.trim();
+  if (!status || !location) { showAlert('updateErr','updateErrMsg','Status and location are required.','error'); return; }
+
+  const ts = document.getElementById('newTimestamp').value;
+  const update = {
+    timestamp: ts ? new Date(ts).toISOString() : new Date().toISOString(),
+    status:    status.replace(' — Delivery Issue',''),
+    location,
+    note: document.getElementById('newNote').value.trim(),
+  };
+
+  const btn = document.getElementById('updateBtn');
+  btn.innerHTML = '<span class="spinner"></span> Saving…';
+  btn.disabled  = true;
+
+  try {
+    const res = await api('/api/shipments/' + selectedUpdateTN, { method: 'PUT', body: JSON.stringify(update) });
+    if (res.ok) {
+      showAlert('updateAlert','updateAlertMsg',`Update saved for ${selectedUpdateTN}!`,'success');
+      document.getElementById('newStatus').value   = '';
+      document.getElementById('newLocation').value = '';
+      document.getElementById('newNote').value     = '';
+      setDefaultTimestamp();
+
+      // Refresh cache then re-render history with updated data
+      shipmentsCache = null;
+      await loadAndRefresh();
+      const fresh = allShipments.find(x => x.trackingNumber === selectedUpdateTN);
+      if (fresh) renderHistory(fresh);
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showAlert('updateErr','updateErrMsg', err.error || 'Failed to save update.','error');
+    }
+  } catch {
+    showAlert('updateErr','updateErrMsg','Network error. Check your connection.','error');
+  }
+
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Save Update';
+  btn.disabled  = false;
+}
+
+// ════════════════════════════════════════════════════════
+//  VIEW MODAL
+// ════════════════════════════════════════════════════════
+function viewShipment(tn) {
+  const s = allShipments.find(x => x.trackingNumber === tn);
+  if (!s) return;
+
+  document.getElementById('viewModalTitle').textContent = 'Shipment — ' + tn;
+  document.getElementById('viewModalBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+      <div style="padding:16px;background:var(--bg);border-radius:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Sender</div>
+        <div style="font-weight:700;">${esc(s.senderName)}</div>
+        <div style="font-size:13px;color:var(--text2);">${esc(s.senderAddress)}</div>
+        <div style="font-size:13px;color:var(--text2);">${esc(s.senderCity)}</div>
+        ${s.senderPhone ? `<div style="font-size:13px;color:var(--muted);">${esc(s.senderPhone)}</div>` : ''}
+      </div>
+      <div style="padding:16px;background:var(--bg);border-radius:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Recipient</div>
+        <div style="font-weight:700;">${esc(s.recipientName)}</div>
+        <div style="font-size:13px;color:var(--text2);">${esc(s.recipientAddress)}</div>
+        <div style="font-size:13px;color:var(--text2);">${esc(s.recipientCity)}</div>
+        ${s.recipientPhone ? `<div style="font-size:13px;color:var(--muted);">${esc(s.recipientPhone)}</div>` : ''}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Service</div><div style="font-weight:700;margin-top:4px;">${esc(s.serviceType)}</div></div>
+      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weight</div><div style="font-weight:700;margin-top:4px;">${esc(s.weight)} kg</div></div>
+      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">ETA</div><div style="font-weight:700;margin-top:4px;">${fmtDate(s.estimatedDelivery)}</div></div>
+    </div>
+    <div style="margin-bottom:20px;"><div style="font-weight:600;margin-bottom:6px;">Package: ${esc(s.description)}</div>${s.notes ? `<div style="font-size:13px;color:var(--text2);">${esc(s.notes)}</div>` : ''}</div>
+    <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Tracking History</div>
+    <div class="update-timeline">
+      ${[...s.updates].reverse().map(u => `
+        <div class="update-item">
+          <div class="update-dot"></div>
+          <div class="update-info">
+            <div class="update-status">${statusBadge(u.status)}</div>
+            <div class="update-location">${esc(u.location)}</div>
+            ${u.note ? `<div class="update-note">${esc(u.note)}</div>` : ''}
+            <div class="update-time">${fmtDateTime(u.timestamp)}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.getElementById('viewModal').classList.add('open');
+}
+
+// ════════════════════════════════════════════════════════
+//  DELETE
+// ════════════════════════════════════════════════════════
+function deleteShipment(tn) {
+  pendingDeleteTN = tn;
+  document.getElementById('deleteTNLabel').textContent = tn;
+  document.getElementById('deleteModal').classList.add('open');
+}
+
+async function confirmDelete() {
+  const btn = document.getElementById('confirmDeleteBtn');
+  btn.innerHTML = '<span class="spinner spinner-dark"></span>';
+  btn.disabled  = true;
+
+  try {
+    await api('/api/shipments/' + pendingDeleteTN, { method: 'DELETE' });
+    closeModal('deleteModal');
+    shipmentsCache = null;
+    await loadAndRefresh();
+  } catch {
+    alert('Failed to delete. Please try again.');
+  }
+
+  btn.innerHTML = 'Delete';
+  btn.disabled  = false;
+}
+
+// ════════════════════════════════════════════════════════
+//  NAV SHORTCUT: All Shipments → Update tab
+// ════════════════════════════════════════════════════════
+function goUpdate(tn) {
+  showTab('add-update', document.querySelector('[onclick*="add-update"]'));
+  setTimeout(() => selectForUpdate(tn), 80);
+}
+
+// ════════════════════════════════════════════════════════
+//  MODAL HELPERS
+// ════════════════════════════════════════════════════════
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+// ════════════════════════════════════════════════════════
+//  SHARED HELPERS
+// ════════════════════════════════════════════════════════
+function latestStatus(s) {
+  if (!s.updates?.length) return 'Order Placed';
+  return s.updates[s.updates.length - 1].status;
+}
+function latestLocation(s) {
+  if (!s.updates?.length) return '—';
+  return s.updates[s.updates.length - 1].location;
+}
+
+function statusBadge(status) {
+  const map = { 'Order Placed':'placed','Processing':'processing','In Transit':'transit','Out for Delivery':'delivery','Delivered':'delivered','Exception':'exception' };
+  const cls = map[status] || 'placed';
+  return `<span class="badge badge-${cls}">${esc(status)}</span>`;
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); } catch { return d; }
+}
+function fmtDateTime(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch { return d; }
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showAlert(alertId, msgId, msg, type) {
+  const el  = document.getElementById(alertId);
+  const mel = document.getElementById(msgId);
+  el.className = 'alert ' + (type === 'success' ? 'alert-success' : 'alert-error') + ' show';
+  if (mel) mel.textContent = msg;
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+</script>
+</body>
+</html>

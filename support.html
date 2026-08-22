@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support | RedEx</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #4D148C;
+      --orange: #FF6600;
+      --blue: #0066B3;
+      --light-purple: #6a1fbd;
+      --bg: #f5f5f5;
+      --text: #1a1a1a;
+      --muted: #666;
+      --border: #e0e0e0;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+
+    /* NAV */
+    nav {
+      background: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.6rem; text-decoration: none; }
+    .logo span { color: var(--orange); }
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.15); color: #fff; }
+    .nav-cta {
+      background: var(--orange);
+      color: #fff;
+      padding: 0.45rem 1.1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--purple) 0%, var(--light-purple) 60%, #8b35e8 100%);
+      color: #fff;
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+    }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: 2.6rem; margin-bottom: 0.75rem; }
+    .hero p { font-size: 1.1rem; opacity: 0.88; max-width: 520px; margin: 0 auto 2rem; }
+    .hero-search {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto;
+      gap: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .hero-search input {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      border: none;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+    }
+    .hero-search button {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 0 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .hero-search button:hover { background: #e05500; }
+
+    /* CONTACT CARDS */
+    .section { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .section-title { font-size: 1.6rem; font-weight: 700; color: var(--purple); margin-bottom: 0.4rem; }
+    .section-sub { color: var(--muted); margin-bottom: 2rem; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      border-top: 4px solid var(--purple);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .contact-card:hover { transform: translateY(-4px); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+    .contact-card .icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.6rem;
+    }
+    .icon-phone { background: #ede7f6; }
+    .icon-email { background: #fff3e0; }
+    .icon-chat { background: #e8f5e9; }
+    .icon-track { background: #e3f2fd; }
+    .contact-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .contact-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.2rem; }
+    .contact-card .hours { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      border-radius: 5px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-purple { background: var(--purple); color: #fff; }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-outline { background: transparent; border: 2px solid var(--purple); color: var(--purple); }
+
+    /* FAQ */
+    .faq-section { background: #fff; padding: 3rem 1.5rem; }
+    .faq-inner { max-width: 800px; margin: 0 auto; }
+    .faq-inner .section-title { text-align: center; }
+    .faq-inner .section-sub { text-align: center; margin-bottom: 2.5rem; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 1.1rem 0;
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .faq-question:hover { color: var(--purple); }
+    .faq-question .chevron {
+      font-size: 1.1rem;
+      color: var(--purple);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .faq-question.open .chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .faq-answer.open { max-height: 300px; padding-bottom: 1rem; }
+
+    /* CONTACT FORM */
+    .form-section { max-width: 700px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .form-section .section-title { text-align: center; }
+    .form-section .section-sub { text-align: center; margin-bottom: 2rem; }
+    .contact-form {
+      background: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--purple); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-submit { text-align: center; margin-top: 0.5rem; }
+    .form-submit .btn { padding: 0.8rem 2.5rem; font-size: 1rem; }
+    .form-note { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 0.8rem; }
+    #formSuccess {
+      display: none;
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+      color: #2e7d32;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    /* FOOTER */
+    footer { background: #1a1a2e; color: rgba(255,255,255,0.7); padding: 3rem 1.5rem 1.5rem; margin-top: 0; }
+    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+    .footer-col h4 { color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.5rem; }
+    .footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; }
+    .footer-col a:hover { color: var(--orange); }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-bottom p { font-size: 0.8rem; }
+    .footer-logo { color: #fff; font-family: 'Playfair Display', serif; font-size: 1.3rem; text-decoration: none; }
+    .footer-logo span { color: var(--orange); }
+
+    /* LIVE CHAT FAB */
+    .fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 0.8rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,102,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 999;
+      font-family: 'Inter', sans-serif;
+    }
+    .fab:hover { background: #e05500; }
+
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 1.8rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="redex.html" class="logo">Red<span>Ex</span></a>
+  <ul class="nav-links">
+    <li><a href="shipping.html">Shipping</a></li>
+    <li><a href="tracking.html">Tracking</a></li>
+    <li><a href="design-print.html">Design &amp; Print</a></li>
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="support.html" class="active">Support</a></li>
+  </ul>
+  <a href="shipping.html" class="nav-cta">Ship Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>How Can We Help?</h1>
+  <p>Search our help center or choose a contact option below. We're here whenever you need us.</p>
+  <div class="hero-search">
+    <input type="text" id="faqSearch" placeholder="Search help topics…" oninput="searchFaq(this.value)" />
+    <button onclick="searchFaq(document.getElementById('faqSearch').value)">Search</button>
+  </div>
+</section>
+
+<!-- CONTACT OPTIONS -->
+<div class="section">
+  <h2 class="section-title">Contact Options</h2>
+  <p class="section-sub">Choose the support channel that works best for you.</p>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="icon icon-phone">📞</div>
+      <h3>Phone Support</h3>
+      <p>Speak directly with a customer service representative about your shipment or inquiry.</p>
+      <p class="hours">Mon – Fri: 7 AM – 9 PM<br>Sat – Sun: 9 AM – 6 PM</p>
+      <a href="tel:+18005551234" class="btn btn-purple">Call Now</a>
+    </div>
+    <div class="contact-card">
+      <div class="icon icon-email">✉️</div>
+      <h3>Email Support</h3>
+      <p>Send us your question and we'll respond within one business day with a detailed answer.</p>
+      <p class="hours">Response time: 24 hours<br>Available 7 days a week</p>
+      <button class="btn btn-purple" onclick="document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">Send a Message</button>
+    </div>
+    <div class="contact-card">
+      <div class="icon icon-chat">💬</div>
+      <h3>Live Chat</h3>
+      <p>Chat in real time with a support agent. Fastest way to get help with urgent issues.</p>
+      <p class="hours">Mon – Fri: 8 AM – 8 PM<br>Sat: 9 AM – 5 PM</p>
+      <button class="btn btn-orange">Start Chat</button>
+    </div>
+    <div class="contact-card">
+      <div class="icon icon-track">📦</div>
+      <h3>Track a Shipment</h3>
+      <p>Enter your tracking number to get real-time status updates on any active shipment.</p>
+      <p class="hours">Available 24 / 7<br>No login required</p>
+      <a href="tracking.html" class="btn btn-outline">Track Now</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub">Find quick answers to common questions.</p>
+
+    <div id="faqList">
+      <div class="faq-item" data-keywords="tracking number find where">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How do I track my shipment? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Visit our <a href="tracking.html" style="color:var(--purple)">Tracking page</a> and enter your tracking number (starts with RDX). You can find the tracking number on your receipt, confirmation email, or the shipping label. Results update in real time.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="delivery time how long days">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How long does delivery take? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Delivery times depend on your chosen service: Overnight (next business day), Express (1–2 days), Standard (3–5 days), and Economy (7–10 days). Times may vary due to remote locations, weather, or public holidays.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="package lost missing damaged claim">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          My package is lost or damaged. What should I do? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          First, check the tracking status on our Tracking page. If your package shows as delivered but you haven't received it, check with neighbours or building management. For confirmed lost or damaged items, contact our support team by phone or email and have your tracking number ready to file a claim.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="cancel change modify shipment order">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Can I cancel or modify a shipment after it's been created? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Shipments can be modified or cancelled before they are collected or dropped off at a facility. Once the item is in transit, modifications may not be possible. Contact us as soon as possible via phone or live chat for time-sensitive changes.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="prohibited items banned restricted cannot ship">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What items are prohibited from shipping? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Prohibited items include hazardous materials, explosives, flammable liquids, live animals, perishable food (unless via specialised service), counterfeit goods, and illegal substances. Restricted items such as lithium batteries and medical devices may require special handling. Contact us if you're unsure about your item.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="weight size dimension limit maximum package">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Are there weight or size limits for packages? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Standard parcels can weigh up to 30 kg and measure up to 120 cm on the longest side. For oversized or overweight freight, please contact our team for a custom quote and special handling arrangements.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="insurance coverage liability value declared">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Does my shipment come with insurance? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Basic carrier liability is included with every shipment up to a declared value limit. For higher-value items, we strongly recommend purchasing additional declared-value coverage at the time of booking. Ask our team for details during checkout.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="pickup collection drop off where location">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How do I drop off or arrange a pickup? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          You can drop your parcel at any of our <a href="locations.html" style="color:var(--purple)">service locations</a>. To schedule a home or office collection, book online on the <a href="shipping.html" style="color:var(--purple)">Shipping page</a> or call our phone support line.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="international overseas abroad customs duty">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Do you offer international shipping? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Yes. International shipping is available to over 150 countries. The recipient may be required to pay customs duties and import taxes upon arrival — these are determined by the destination country's regulations and are not included in our shipping fees.
+        </div>
+      </div>
+
+      <div class="faq-item" data-keywords="refund money back billing charge invoice">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How do I request a refund or billing adjustment? <span class="chevron">&#8964;</span>
+        </button>
+        <div class="faq-answer">
+          Refund and billing adjustment requests must be submitted within 30 days of the shipment date. Use the contact form below, select "Billing Issue" as the topic, and include your tracking number and a brief description. Our billing team will review within 3–5 business days.
+        </div>
+      </div>
+    </div>
+
+    <p id="noFaqResults" style="display:none; text-align:center; color:var(--muted); padding:2rem 0;">No results found. Try different keywords or contact us directly.</p>
+  </div>
+</div>
+
+<!-- CONTACT FORM -->
+<div class="form-section" id="contactForm">
+  <h2 class="section-title">Send Us a Message</h2>
+  <p class="section-sub">Fill in the form below and we'll get back to you within 24 hours.</p>
+
+  <form class="contact-form" onsubmit="submitForm(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="firstName">First Name *</label>
+        <input type="text" id="firstName" placeholder="Jane" required />
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name *</label>
+        <input type="text" id="lastName" placeholder="Doe" required />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" placeholder="jane@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="+1 (555) 000-0000" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="trackingRef">Tracking Number (if applicable)</label>
+      <input type="text" id="trackingRef" placeholder="RDX…" />
+    </div>
+    <div class="form-group">
+      <label for="topic">Topic *</label>
+      <select id="topic" required>
+        <option value="" disabled selected>Select a topic</option>
+        <option>Shipment Status</option>
+        <option>Lost or Damaged Package</option>
+        <option>Billing Issue</option>
+        <option>Cancel or Modify Shipment</option>
+        <option>Pickup / Drop-Off</option>
+        <option>International Shipping</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Message *</label>
+      <textarea id="message" placeholder="Describe your issue or question in detail…" required></textarea>
+    </div>
+    <div class="form-submit">
+      <button type="submit" class="btn btn-purple">Send Message</button>
+    </div>
+    <p class="form-note">We typically respond within one business day. For urgent matters, please call or use live chat.</p>
+    <div id="formSuccess">✓ Message sent! We'll be in touch within 24 hours.</div>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Our Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Our Blog</a></li>
+        <li><a href="#">Press Room</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="shipping.html">Shipping Options</a></li>
+        <li><a href="tracking.html">Track a Shipment</a></li>
+        <li><a href="design-print.html">Design &amp; Print</a></li>
+        <li><a href="locations.html">Find a Location</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Policy Center</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Settings</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="redex.html" class="footer-logo">Red<span>Ex</span></a>
+    <p>&copy; 2025 RedEx Courier Services. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- LIVE CHAT FAB -->
+<button class="fab">💬 Live Chat</button>
+
+<script>
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-answer.open').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-question.open').forEach(b => b.classList.remove('open'));
+    if (!isOpen) {
+      answer.classList.add('open');
+      btn.classList.add('open');
+    }
+  }
+
+  function searchFaq(query) {
+    const q = query.trim().toLowerCase();
+    const items = document.querySelectorAll('.faq-item');
+    let anyVisible = false;
+    items.forEach(item => {
+      const text = (item.textContent + item.dataset.keywords).toLowerCase();
+      const match = !q || text.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) anyVisible = true;
+    });
+    document.getElementById('noFaqResults').style.display = anyVisible ? 'none' : 'block';
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'block';
+      e.target.reset();
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
+    }, 1200);
+  }
+</script>
+</body>
+</html>

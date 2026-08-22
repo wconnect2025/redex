@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipping Services — RedEx</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --purple: #4D148C; --purple-dark: #2d0a52; --purple-light: #6b2aa8;
+    --orange: #FF6600; --orange-light: #FF8533; --blue: #0066B3;
+    --green: #16a34a;
+    --bg: #fafafa; --card: #fff; --border: #e8e8f0;
+    --text: #0f0f1e; --text2: #4a4a68; --muted: #8e8ea0;
+    --radius-sm: 10px; --radius-md: 16px; --radius-lg: 24px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
+    --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
+    --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(77,20,140,0.92); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.1); transition: var(--transition); }
+  .navbar.scrolled { background: rgba(77,20,140,0.98); box-shadow: 0 8px 32px rgba(77,20,140,0.3); }
+  .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; height: 72px; display: flex; align-items: center; gap: 4px; }
+  .logo { font-size: 32px; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: -1.5px; margin-right: 32px; }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; align-items: center; gap: 4px; flex: 1; }
+  .nav-link { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14.5px; font-weight: 500; padding: 10px 18px; border-radius: var(--radius-sm); transition: var(--transition); }
+  .nav-link:hover, .nav-link.active { color: #fff; background: rgba(255,255,255,0.1); }
+  .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .nav-btn { color: rgba(255,255,255,0.95); text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: var(--radius-sm); background: rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; transition: var(--transition); }
+  .nav-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* PAGE HERO */
+  .page-hero { background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, #7b3cbf 100%); padding: 136px 40px 80px; position: relative; overflow: hidden; }
+  .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(255,102,0,0.18) 0%, transparent 60%); }
+  .page-hero-inner { max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; }
+  .page-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.9); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; }
+  .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(36px,5vw,58px); font-weight: 600; color: #fff; line-height: 1.15; letter-spacing: -1px; margin-bottom: 18px; max-width: 640px; }
+  .page-hero p { font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.7; max-width: 540px; margin-bottom: 32px; }
+  .hero-cta-row { display: flex; gap: 16px; align-items: center; }
+  .btn-hero { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; padding: 15px 32px; border-radius: var(--radius-md); transition: var(--transition); }
+  .btn-hero:hover { background: var(--orange-light); transform: translateY(-2px); }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.85); font-size: 14px; font-weight: 600; text-decoration: none; transition: var(--transition); }
+  .btn-ghost:hover { color: #fff; gap: 12px; }
+
+  /* MAIN */
+  .main { max-width: 1280px; margin: 0 auto; padding: 80px 40px; }
+
+  /* SECTION LABEL */
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 800; color: var(--purple); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 16px; padding: 6px 16px; background: rgba(77,20,140,0.08); border-radius: 100px; }
+  .section-label::before { content: ''; width: 28px; height: 3px; background: var(--orange); border-radius: 3px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,3.5vw,40px); font-weight: 600; color: var(--text); letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 48px; }
+  .section-title span { color: var(--purple); }
+
+  /* SERVICE CARDS */
+  .services-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-bottom: 100px; }
+  .service-card { background: var(--card); border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 32px 28px; transition: var(--transition); position: relative; overflow: hidden; }
+  .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .service-card.express::before   { background: linear-gradient(90deg, var(--orange), var(--orange-light)); }
+  .service-card.standard::before  { background: linear-gradient(90deg, var(--purple), var(--purple-light)); }
+  .service-card.economy::before   { background: linear-gradient(90deg, var(--blue), #0080d4); }
+  .service-card.overnight::before { background: linear-gradient(90deg, var(--green), #22c55e); }
+  .service-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: rgba(77,20,140,0.12); }
+  .svc-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .svc-icon svg { width: 26px; height: 26px; }
+  .service-card.express   .svc-icon { background: rgba(255,102,0,0.1);  } .service-card.express   .svc-icon svg { stroke: var(--orange); }
+  .service-card.standard  .svc-icon { background: rgba(77,20,140,0.1);  } .service-card.standard  .svc-icon svg { stroke: var(--purple); }
+  .service-card.economy   .svc-icon { background: rgba(0,102,179,0.1);  } .service-card.economy   .svc-icon svg { stroke: var(--blue);   }
+  .service-card.overnight .svc-icon { background: rgba(22,163,74,0.1);  } .service-card.overnight .svc-icon svg { stroke: var(--green);  }
+  .svc-name { font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+  .svc-days { display: inline-block; font-size: 13px; font-weight: 700; color: var(--purple); background: rgba(77,20,140,0.08); padding: 4px 12px; border-radius: 100px; margin-bottom: 14px; }
+  .service-card.express   .svc-days { color: var(--orange); background: rgba(255,102,0,0.08); }
+  .service-card.overnight .svc-days { color: var(--green);  background: rgba(22,163,74,0.08); }
+  .svc-desc { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+  .svc-features { list-style: none; }
+  .svc-features li { font-size: 13px; color: var(--text2); padding: 5px 0; display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--border); }
+  .svc-features li::before { content: '✓'; color: var(--green); font-weight: 800; font-size: 12px; flex-shrink: 0; }
+
+  /* HOW IT WORKS */
+  .how-section { background: linear-gradient(135deg, #f5f0fa 0%, #ede5f5 100%); border-radius: var(--radius-lg); padding: 72px 60px; margin-bottom: 100px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; }
+  .step { text-align: center; position: relative; }
+  .step:not(:last-child)::after { content: '→'; position: absolute; right: -24px; top: 28px; font-size: 28px; color: rgba(77,20,140,0.2); font-weight: 300; }
+  .step-num { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--purple-light)); color: #fff; font-size: 24px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(77,20,140,0.3); }
+  .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+  .step p { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* RATES TABLE */
+  .rates-section { margin-bottom: 100px; }
+  .rates-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .rates-table thead th { background: var(--purple); color: #fff; padding: 16px 20px; text-align: left; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .rates-table tbody td { padding: 16px 20px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .rates-table tbody tr:last-child td { border-bottom: none; }
+  .rates-table tbody tr:hover { background: rgba(77,20,140,0.02); }
+  .rate-tag { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+  .rate-express   { background: rgba(255,102,0,0.1); color: var(--orange); }
+  .rate-standard  { background: rgba(77,20,140,0.1); color: var(--purple); }
+  .rate-economy   { background: rgba(0,102,179,0.1); color: var(--blue);   }
+  .rate-overnight { background: rgba(22,163,74,0.1); color: var(--green);  }
+
+  /* CTA BANNER */
+  .cta-banner { background: linear-gradient(135deg, var(--purple) 0%, var(--purple-light) 100%); border-radius: var(--radius-lg); padding: 64px 60px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+  .cta-banner h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px,3vw,36px); font-weight: 600; color: #fff; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .cta-banner p { color: rgba(255,255,255,0.75); font-size: 15px; }
+  .cta-btns { display: flex; gap: 14px; flex-shrink: 0; }
+  .btn-white { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--purple); font-size: 14px; font-weight: 700; text-decoration: none; padding: 14px 28px; border-radius: var(--radius-md); transition: var(--transition); }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+  .btn-outline-white { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; padding: 14px 28px; border-radius: var(--radius-md); border: 2px solid rgba(255,255,255,0.4); transition: var(--transition); }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+
+  /* FOOTER */
+  .footer { background: #fff; border-top: 1px solid var(--border); padding: 80px 40px 40px; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-top { display: flex; justify-content: space-between; gap: 60px; padding-bottom: 56px; border-bottom: 1px solid var(--border); }
+  .footer-cols { display: flex; gap: 64px; flex: 1; }
+  .footer-col h4 { font-size: 11px; font-weight: 800; color: var(--purple); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 24px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 14px; }
+  .footer-col ul li a { color: var(--text2); text-decoration: none; font-size: 14px; transition: var(--transition); }
+  .footer-col ul li a:hover { color: var(--purple); padding-left: 6px; }
+  .footer-bottom { display: flex; align-items: center; gap: 28px; padding-top: 40px; }
+  .footer-bottom h4 { font-size: 11px; font-weight: 800; color: var(--purple); text-transform: uppercase; letter-spacing: 2.5px; }
+  .social-row { display: flex; gap: 12px; }
+  .social-link { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text2); text-decoration: none; transition: var(--transition); }
+  .social-link:hover { background: var(--purple); border-color: var(--purple); color: #fff; transform: translateY(-3px); }
+  .social-link svg { width: 20px; height: 20px; }
+
+  @media (max-width: 1024px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 768px) {
+    .nav-inner { padding: 0 20px; } .nav-links { display: none; }
+    .page-hero { padding: 110px 20px 60px; }
+    .main { padding: 60px 20px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; } .step:not(:last-child)::after { display: none; }
+    .how-section { padding: 48px 28px; }
+    .cta-banner { flex-direction: column; padding: 48px 32px; } .cta-btns { flex-direction: column; }
+    .footer-cols { flex-wrap: wrap; gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="redex.html" class="logo">Red<span>Ex</span></a>
+    <div class="nav-links">
+      <a href="shipping.html"     class="nav-link active">Shipping</a>
+      <a href="tracking.html"     class="nav-link">Tracking</a>
+      <a href="design-print.html" class="nav-link">Design &amp; Print</a>
+      <a href="locations.html"    class="nav-link">Locations</a>
+      <a href="support.html"      class="nav-link">Support</a>
+    </div>
+    <div class="nav-actions">
+      <a href="tracking.html" class="nav-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Track Package
+      </a>
+      <a href="admin.html" class="nav-btn">Admin</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-badge">Shipping Services</div>
+    <h1>Fast, reliable delivery — every single time</h1>
+    <p>From urgent same-day express to cost-effective economy shipping, choose the service level that fits your timeline and budget.</p>
+    <div class="hero-cta-row">
+      <a href="support.html" class="btn-hero">Get a Custom Quote →</a>
+      <a href="tracking.html" class="btn-ghost">Track an existing shipment →</a>
+    </div>
+  </div>
+</section>
+
+<div class="main">
+
+  <!-- SERVICE TYPES -->
+  <div class="section-label">Service Options</div>
+  <h2 class="section-title">Choose your <span>shipping speed</span></h2>
+
+  <div class="services-grid">
+    <div class="service-card express">
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div class="svc-name">Express</div>
+      <div class="svc-days">1–2 Business Days</div>
+      <p class="svc-desc">When speed is everything. Priority handling from pick-up to delivery, with real-time tracking at every step.</p>
+      <ul class="svc-features">
+        <li>Priority sorting & handling</li>
+        <li>Real-time SMS/email alerts</li>
+        <li>Signature confirmation</li>
+        <li>Money-back guarantee</li>
+      </ul>
+    </div>
+    <div class="service-card standard">
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div class="svc-name">Standard</div>
+      <div class="svc-days">3–5 Business Days</div>
+      <p class="svc-desc">Our most popular option. Reliable delivery with full tracking — the ideal balance of speed and value.</p>
+      <ul class="svc-features">
+        <li>Full tracking included</li>
+        <li>Door-to-door delivery</li>
+        <li>Up to 70 lbs per parcel</li>
+        <li>Delivery confirmation</li>
+      </ul>
+    </div>
+    <div class="service-card economy">
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div class="svc-name">Economy</div>
+      <div class="svc-days">7–10 Business Days</div>
+      <p class="svc-desc">Budget-friendly shipping for non-urgent deliveries. Great for bulk items and large parcels.</p>
+      <ul class="svc-features">
+        <li>Lowest cost option</li>
+        <li>Tracking included</li>
+        <li>Ideal for heavy/bulk items</li>
+        <li>Residential delivery</li>
+      </ul>
+    </div>
+    <div class="service-card overnight">
+      <div class="svc-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </div>
+      <div class="svc-name">Overnight</div>
+      <div class="svc-days">Next Business Day</div>
+      <p class="svc-desc">Drop off by 5 PM and your package arrives by 10:30 AM the next business day. Guaranteed.</p>
+      <ul class="svc-features">
+        <li>10:30 AM delivery guaranteed</li>
+        <li>Available nationwide</li>
+        <li>Flat-rate pricing available</li>
+        <li>Real-time tracking</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div class="section-label" style="margin:0 auto 16px;">How It Works</div>
+      <h2 class="section-title" style="margin-bottom:0;">Shipping in <span>three easy steps</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Book Your Shipment</h3>
+        <p>Choose your service level, enter pickup and delivery addresses, and get an instant quote. No account required.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Drop Off or Schedule Pickup</h3>
+        <p>Bring your package to any of our locations, or schedule a free door-to-door collection at a time that suits you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Track Every Step</h3>
+        <p>Use your tracking number to follow your shipment in real time — from pick-up all the way to the recipient's door.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RATES TABLE -->
+  <div class="rates-section">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Simple, transparent <span>rates</span></h2>
+    <table class="rates-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Delivery Time</th>
+          <th>Up to 1 lb</th>
+          <th>Up to 5 lbs</th>
+          <th>Up to 20 lbs</th>
+          <th>Max Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rate-tag rate-overnight">Overnight</span></td>
+          <td>Next business day by 10:30 AM</td>
+          <td><strong>$29.99</strong></td>
+          <td><strong>$39.99</strong></td>
+          <td><strong>$54.99</strong></td>
+          <td>70 lbs</td>
+        </tr>
+        <tr>
+          <td><span class="rate-tag rate-express">Express</span></td>
+          <td>1–2 business days</td>
+          <td><strong>$18.99</strong></td>
+          <td><strong>$26.99</strong></td>
+          <td><strong>$38.99</strong></td>
+          <td>150 lbs</td>
+        </tr>
+        <tr>
+          <td><span class="rate-tag rate-standard">Standard</span></td>
+          <td>3–5 business days</td>
+          <td><strong>$9.99</strong></td>
+          <td><strong>$14.99</strong></td>
+          <td><strong>$21.99</strong></td>
+          <td>150 lbs</td>
+        </tr>
+        <tr>
+          <td><span class="rate-tag rate-economy">Economy</span></td>
+          <td>7–10 business days</td>
+          <td><strong>$5.99</strong></td>
+          <td><strong>$8.99</strong></td>
+          <td><strong>$13.99</strong></td>
+          <td>70 lbs</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;">* Rates are estimates. Dimensional weight, surcharges, and remote area fees may apply. Contact us for a precise quote.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <div>
+      <h2>Ready to send your first shipment?</h2>
+      <p>Get a custom quote or drop off your package at any location today.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="support.html" class="btn-white">Get a Quote</a>
+      <a href="locations.html" class="btn-outline-white">Find a Location</a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Our Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Newsroom</a></li>
+            <li><a href="support.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="shipping.html">Shipping</a></li>
+            <li><a href="tracking.html">Tracking</a></li>
+            <li><a href="design-print.html">Design &amp; Print</a></li>
+            <li><a href="locations.html">Locations</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Policy Center</h4>
+          <ul>
+            <li><a href="#">Terms of Use</a></li>
+            <li><a href="#">Privacy &amp; Security</a></li>
+            <li><a href="#">Your Privacy Choices</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <h4>Follow Us</h4>
+      <div class="social-row">
+        <a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg></a>
+        <a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a href="#" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+      <p style="margin-left:auto;font-size:13px;color:var(--muted);">&copy; 2025 All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+  });
+</script>
+</body>
+</html>
