@@ -1231,9 +1231,21 @@ async function loadSettings() {
   }
 }
 
+function shadeColor(hex, amt) {
+  const n = parseInt(hex.replace('#',''), 16);
+  const r = Math.max(0, Math.min(255, (n >> 16)         + amt));
+  const g = Math.max(0, Math.min(255, ((n >> 8) & 0xFF) + amt));
+  const b = Math.max(0, Math.min(255, (n & 0xFF)        + amt));
+  return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+}
+
 function applyBranding(s) {
   const root = document.documentElement;
-  if (s.primaryColor) root.style.setProperty('--purple', s.primaryColor);
+  if (s.primaryColor) {
+    root.style.setProperty('--purple',       s.primaryColor);
+    root.style.setProperty('--purple-dark',  shadeColor(s.primaryColor, -45));
+    root.style.setProperty('--purple-light', shadeColor(s.primaryColor,  30));
+  }
   if (s.accentColor)  root.style.setProperty('--orange', s.accentColor);
 
   const p1 = s.namePart1 || 'Red';
