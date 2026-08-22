@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -292,7 +292,7 @@
   <h1>How Can We Help?</h1>
   <p>Search our help center or choose a contact option below. We're here whenever you need us.</p>
   <div class="hero-search">
-    <input type="text" id="faqSearch" placeholder="Search help topicsâ€¦" oninput="searchFaq(this.value)" />
+    <input type="text" id="faqSearch" placeholder="Search help topics…" oninput="searchFaq(this.value)" />
     <button onclick="searchFaq(document.getElementById('faqSearch').value)">Search</button>
   </div>
 </section>
@@ -304,28 +304,28 @@
 
   <div class="contact-grid">
     <div class="contact-card">
-      <div class="icon icon-phone">ðŸ“ž</div>
+      <div class="icon icon-phone">📞</div>
       <h3>Phone Support</h3>
       <p>Speak directly with a customer service representative about your shipment or inquiry.</p>
-      <p class="hours">Mon â€“ Fri: 7 AM â€“ 9 PM<br>Sat â€“ Sun: 9 AM â€“ 6 PM</p>
+      <p class="hours">Mon – Fri: 7 AM – 9 PM<br>Sat – Sun: 9 AM – 6 PM</p>
       <a href="tel:+18005551234" class="btn btn-purple">Call Now</a>
     </div>
     <div class="contact-card">
-      <div class="icon icon-email">âœ‰ï¸</div>
+      <div class="icon icon-email">✉️</div>
       <h3>Email Support</h3>
       <p>Send us your question and we'll respond within one business day with a detailed answer.</p>
       <p class="hours">Response time: 24 hours<br>Available 7 days a week</p>
       <button class="btn btn-purple" onclick="document.getElementById('contactForm').scrollIntoView({behavior:'smooth'})">Send a Message</button>
     </div>
     <div class="contact-card">
-      <div class="icon icon-chat">ðŸ’¬</div>
+      <div class="icon icon-chat">💬</div>
       <h3>Live Chat</h3>
       <p>Chat in real time with a support agent. Fastest way to get help with urgent issues.</p>
-      <p class="hours">Mon â€“ Fri: 8 AM â€“ 8 PM<br>Sat: 9 AM â€“ 5 PM</p>
+      <p class="hours">Mon – Fri: 8 AM – 8 PM<br>Sat: 9 AM – 5 PM</p>
       <button class="btn btn-orange">Start Chat</button>
     </div>
     <div class="contact-card">
-      <div class="icon icon-track">ðŸ“¦</div>
+      <div class="icon icon-track">📦</div>
       <h3>Track a Shipment</h3>
       <p>Enter your tracking number to get real-time status updates on any active shipment.</p>
       <p class="hours">Available 24 / 7<br>No login required</p>
@@ -355,7 +355,7 @@
           How long does delivery take? <span class="chevron">&#8964;</span>
         </button>
         <div class="faq-answer">
-          Delivery times depend on your chosen service: Overnight (next business day), Express (1â€“2 days), Standard (3â€“5 days), and Economy (7â€“10 days). Times may vary due to remote locations, weather, or public holidays.
+          Delivery times depend on your chosen service: Overnight (next business day), Express (1–2 days), Standard (3–5 days), and Economy (7–10 days). Times may vary due to remote locations, weather, or public holidays.
         </div>
       </div>
 
@@ -418,7 +418,7 @@
           Do you offer international shipping? <span class="chevron">&#8964;</span>
         </button>
         <div class="faq-answer">
-          Yes. International shipping is available to over 150 countries. The recipient may be required to pay customs duties and import taxes upon arrival â€” these are determined by the destination country's regulations and are not included in our shipping fees.
+          Yes. International shipping is available to over 150 countries. The recipient may be required to pay customs duties and import taxes upon arrival — these are determined by the destination country's regulations and are not included in our shipping fees.
         </div>
       </div>
 
@@ -427,7 +427,7 @@
           How do I request a refund or billing adjustment? <span class="chevron">&#8964;</span>
         </button>
         <div class="faq-answer">
-          Refund and billing adjustment requests must be submitted within 30 days of the shipment date. Use the contact form below, select "Billing Issue" as the topic, and include your tracking number and a brief description. Our billing team will review within 3â€“5 business days.
+          Refund and billing adjustment requests must be submitted within 30 days of the shipment date. Use the contact form below, select "Billing Issue" as the topic, and include your tracking number and a brief description. Our billing team will review within 3–5 business days.
         </div>
       </div>
     </div>
@@ -464,7 +464,7 @@
     </div>
     <div class="form-group">
       <label for="trackingRef">Tracking Number (if applicable)</label>
-      <input type="text" id="trackingRef" placeholder="RDXâ€¦" />
+      <input type="text" id="trackingRef" placeholder="RDX…" />
     </div>
     <div class="form-group">
       <label for="topic">Topic *</label>
@@ -481,13 +481,13 @@
     </div>
     <div class="form-group">
       <label for="message">Message *</label>
-      <textarea id="message" placeholder="Describe your issue or question in detailâ€¦" required></textarea>
+      <textarea id="message" placeholder="Describe your issue or question in detail…" required></textarea>
     </div>
     <div class="form-submit">
       <button type="submit" class="btn btn-purple">Send Message</button>
     </div>
     <p class="form-note">We typically respond within one business day. For urgent matters, please call or use live chat.</p>
-    <div id="formSuccess">âœ“ Message sent! We'll be in touch within 24 hours.</div>
+    <div id="formSuccess">✓ Message sent! We'll be in touch within 24 hours.</div>
   </form>
 </div>
 
@@ -529,7 +529,7 @@
 </footer>
 
 <!-- LIVE CHAT FAB -->
-<button class="fab">ðŸ’¬ Live Chat</button>
+<button class="fab">💬 Live Chat</button>
 
 <script>
   function toggleFaq(btn) {
@@ -559,7 +559,7 @@
   function submitForm(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button[type="submit"]');
-    btn.textContent = 'Sendingâ€¦';
+    btn.textContent = 'Sending…';
     btn.disabled = true;
     setTimeout(() => {
       document.getElementById('formSuccess').style.display = 'block';

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -376,7 +376,7 @@
     <section class="tab-section" id="tab-new-shipment">
       <div class="page-header">
         <h1>Create New Shipment</h1>
-        <p>Fill in the details below â€” a tracking number will be auto-generated</p>
+        <p>Fill in the details below — a tracking number will be auto-generated</p>
       </div>
 
       <div class="alert alert-success" id="createAlert"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span id="createAlertMsg"></span></div>
@@ -434,7 +434,7 @@
           </div>
           <div class="form-row">
             <div class="form-group"><label>Estimated Delivery Date *</label><input type="date" id="etaDate"></div>
-            <div class="form-group"><label>Origin Location *</label><input type="text" id="originLocation" placeholder="e.g. Lagos, Nigeria â€” Sorting Facility"></div>
+            <div class="form-group"><label>Origin Location *</label><input type="text" id="originLocation" placeholder="e.g. Lagos, Nigeria — Sorting Facility"></div>
           </div>
           <div class="form-group"><label>Notes / Special Instructions</label><textarea id="pkgNotes" placeholder="Fragile, handle with care..."></textarea></div>
         </div>
@@ -473,7 +473,7 @@
         </div>
         <div class="card-body" style="padding:0;">
           <div class="search-row" style="padding:16px 20px;padding-bottom:0;">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search by tracking #, name, or locationâ€¦" oninput="applyFilters()">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by tracking #, name, or location…" oninput="applyFilters()">
           </div>
           <div class="table-wrap">
             <table>
@@ -503,7 +503,7 @@
         <div class="card" style="margin-bottom:0;">
           <div class="card-header"><span class="card-title">Select Shipment</span></div>
           <div class="card-body">
-            <input type="text" class="search-input" id="updateSearchInput" placeholder="Search tracking # or nameâ€¦" oninput="filterUpdateList()" style="margin-bottom:14px;">
+            <input type="text" class="search-input" id="updateSearchInput" placeholder="Search tracking # or name…" oninput="filterUpdateList()" style="margin-bottom:14px;">
             <div class="shipment-select-list" id="updateShipmentList"></div>
             <div id="selectedShipmentInfo" style="display:none;margin-top:16px;padding:14px;background:rgba(77,20,140,0.05);border-radius:10px;border:1px solid rgba(77,20,140,0.15);">
               <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Selected</div>
@@ -517,17 +517,17 @@
           <div class="card-body">
             <div class="form-group"><label>New Status *</label>
               <select id="newStatus">
-                <option value="">â€” Select status â€”</option>
+                <option value="">— Select status —</option>
                 <option value="Order Placed">Order Placed</option>
                 <option value="Processing">Processing</option>
                 <option value="In Transit">In Transit</option>
                 <option value="Out for Delivery">Out for Delivery</option>
                 <option value="Delivered">Delivered</option>
-                <option value="Exception">Exception â€” Delivery Issue</option>
+                <option value="Exception">Exception — Delivery Issue</option>
               </select>
             </div>
             <div class="form-group"><label>Current Location *</label><input type="text" id="newLocation" placeholder="e.g. Heathrow Airport, London, UK"></div>
-            <div class="form-group"><label>Description / Note</label><textarea id="newNote" placeholder="e.g. Package cleared customsâ€¦" style="min-height:80px;"></textarea></div>
+            <div class="form-group"><label>Description / Note</label><textarea id="newNote" placeholder="e.g. Package cleared customs…" style="min-height:80px;"></textarea></div>
             <div class="form-group"><label>Timestamp</label><input type="datetime-local" id="newTimestamp"></div>
             <button class="btn-submit" id="updateBtn" onclick="addTrackingUpdate()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -651,9 +651,9 @@
 </div>
 
 <script>
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  STATE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 let adminKey         = '';
 let shipmentsCache   = null;
 let allShipments     = [];   // holds whatever we last loaded, for filter/search
@@ -661,9 +661,9 @@ let selectedUpdateTN = null;
 let pendingDeleteTN  = null;
 let currentTN        = '';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  API HELPER
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function api(path, opts = {}) {
   return fetch(path, {
     ...opts,
@@ -675,9 +675,9 @@ function api(path, opts = {}) {
   });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  INIT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 window.addEventListener('DOMContentLoaded', () => {
   const saved = sessionStorage.getItem('redex_admin_key');
   if (saved) {
@@ -697,15 +697,15 @@ function clearSession() {
   adminKey = '';
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  AUTH
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 async function doLogin() {
   const pass = document.getElementById('loginPass').value.trim();
   if (!pass) return;
 
   const btn = document.getElementById('loginBtn');
-  btn.innerHTML = '<span class="spinner"></span> Signing inâ€¦';
+  btn.innerHTML = '<span class="spinner"></span> Signing in…';
   btn.disabled = true;
 
   try {
@@ -728,7 +728,7 @@ async function doLogin() {
     }
   } catch {
     const el = document.getElementById('loginError');
-    el.textContent = 'Network error â€” deploy to Cloudflare Pages or run locally with: npx wrangler pages dev';
+    el.textContent = 'Network error — deploy to Cloudflare Pages or run locally with: npx wrangler pages dev';
     el.style.display = 'block';
     setTimeout(() => el.style.display = 'none', 6000);
   }
@@ -748,9 +748,9 @@ async function showApp() {
   await loadAndRefresh();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  DATA â€” single fetch, everything else reads from cache
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
+//  DATA — single fetch, everything else reads from cache
+// ========================================================
 async function loadAndRefresh() {
   try {
     const res = await api('/api/shipments');
@@ -768,9 +768,9 @@ async function loadAndRefresh() {
   renderUpdateList();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  TABS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function showTab(id, el) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -781,9 +781,9 @@ function showTab(id, el) {
   if (id === 'add-update') setDefaultTimestamp();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  TRACKING NUMBER
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function genTN() {
   const ts  = Date.now().toString().slice(-9);
   const rnd = Math.floor(Math.random() * 100).toString().padStart(2,'0');
@@ -819,9 +819,9 @@ function setDefaultETA() {
   el.value = d.toISOString().split('T')[0];
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  CREATE SHIPMENT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 async function createShipment() {
   const g = id => document.getElementById(id).value.trim();
   const required = {
@@ -863,7 +863,7 @@ async function createShipment() {
   };
 
   const btn = document.getElementById('createBtn');
-  btn.innerHTML = '<span class="spinner"></span> Creatingâ€¦';
+  btn.innerHTML = '<span class="spinner"></span> Creating…';
   btn.disabled  = true;
 
   try {
@@ -895,9 +895,9 @@ function resetCreateForm() {
   regenTN();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  RENDER STATS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function renderStats() {
   const s = allShipments;
   const total     = s.length;
@@ -925,9 +925,9 @@ function renderStats() {
   `;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  RENDER RECENT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function renderRecentShipments() {
   const el = document.getElementById('recentShipments');
   const recent = allShipments.slice(0, 6);
@@ -944,9 +944,9 @@ function renderRecentShipments() {
   </tbody></table>`;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  RENDER ALL SHIPMENTS TABLE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function renderAllShipments() {
   applyFilters();
 }
@@ -988,9 +988,9 @@ function applyFilters() {
   `).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  RENDER UPDATE LIST
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function renderUpdateList() {
   filterUpdateList();
 }
@@ -1020,7 +1020,7 @@ function selectForUpdate(tn) {
   if (!s) return;
   document.getElementById('selectedShipmentInfo').style.display = 'block';
   document.getElementById('selectedTNDisplay').textContent  = tn;
-  document.getElementById('selectedRecipDisplay').textContent = `To: ${s.recipientName} â€” ${s.recipientCity}`;
+  document.getElementById('selectedRecipDisplay').textContent = `To: ${s.recipientName} — ${s.recipientCity}`;
   renderHistory(s);
 }
 
@@ -1043,9 +1043,9 @@ function renderHistory(s) {
   `).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  ADD TRACKING UPDATE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 async function addTrackingUpdate() {
   if (!selectedUpdateTN) { showAlert('updateErr','updateErrMsg','Please select a shipment first.','error'); return; }
 
@@ -1056,13 +1056,13 @@ async function addTrackingUpdate() {
   const ts = document.getElementById('newTimestamp').value;
   const update = {
     timestamp: ts ? new Date(ts).toISOString() : new Date().toISOString(),
-    status:    status.replace(' â€” Delivery Issue',''),
+    status:    status.replace(' — Delivery Issue',''),
     location,
     note: document.getElementById('newNote').value.trim(),
   };
 
   const btn = document.getElementById('updateBtn');
-  btn.innerHTML = '<span class="spinner"></span> Savingâ€¦';
+  btn.innerHTML = '<span class="spinner"></span> Saving…';
   btn.disabled  = true;
 
   try {
@@ -1091,14 +1091,14 @@ async function addTrackingUpdate() {
   btn.disabled  = false;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  VIEW MODAL
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function viewShipment(tn) {
   const s = allShipments.find(x => x.trackingNumber === tn);
   if (!s) return;
 
-  document.getElementById('viewModalTitle').textContent = 'Shipment â€” ' + tn;
+  document.getElementById('viewModalTitle').textContent = 'Shipment — ' + tn;
   document.getElementById('viewModalBody').innerHTML = `
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
       <div style="padding:16px;background:var(--bg);border-radius:10px;">
@@ -1140,9 +1140,9 @@ function viewShipment(tn) {
   document.getElementById('viewModal').classList.add('open');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  DELETE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function deleteShipment(tn) {
   pendingDeleteTN = tn;
   document.getElementById('deleteTNLabel').textContent = tn;
@@ -1167,29 +1167,29 @@ async function confirmDelete() {
   btn.disabled  = false;
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  NAV SHORTCUT: All Shipments â†’ Update tab
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
+//  NAV SHORTCUT: All Shipments → Update tab
+// ========================================================
 function goUpdate(tn) {
   showTab('add-update', document.querySelector('[onclick*="add-update"]'));
   setTimeout(() => selectForUpdate(tn), 80);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  MODAL HELPERS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 //  SHARED HELPERS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ========================================================
 function latestStatus(s) {
   if (!s.updates?.length) return 'Order Placed';
   return s.updates[s.updates.length - 1].status;
 }
 function latestLocation(s) {
-  if (!s.updates?.length) return 'â€”';
+  if (!s.updates?.length) return '—';
   return s.updates[s.updates.length - 1].location;
 }
 
@@ -1200,11 +1200,11 @@ function statusBadge(status) {
 }
 
 function fmtDate(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   try { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); } catch { return d; }
 }
 function fmtDateTime(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   try { return new Date(d).toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch { return d; }
 }
 

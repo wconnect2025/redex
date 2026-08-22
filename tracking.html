@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Track Your Package â€” RedEx</title>
+<title>Track Your Package — RedEx</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -314,7 +314,7 @@ const STATUS_ICONS = {
   'Exception':        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
 };
 
-// â”€â”€â”€ Init: read ?tn= from URL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// --- Init: read ?tn= from URL -----------------------------
 window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const tn = params.get('tn') || params.get('tracking');
@@ -328,7 +328,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
 
-// â”€â”€â”€ Main track function â€” calls Cloudflare Worker API â”€â”€â”€
+// --- Main track function — calls Cloudflare Worker API ---
 async function trackPackage() {
   const raw = document.getElementById('trackInput').value.trim().toUpperCase();
   if (!raw) return;
@@ -349,7 +349,7 @@ async function trackPackage() {
       showNotFound(raw);
     }
   } catch {
-    // Network error â€” show a helpful message
+    // Network error — show a helpful message
     document.getElementById('idleState').style.display    = 'none';
     document.getElementById('notFoundState').style.display = 'none';
     document.getElementById('resultSection').classList.remove('show');
@@ -402,7 +402,7 @@ function showResult(s, raw) {
 
   document.getElementById('resETACard').textContent    = fmtDate(s.estimatedDelivery);
   document.getElementById('resCreated').textContent    = fmtDate(s.createdAt);
-  document.getElementById('resCurrentLoc').textContent = latest ? latest.location : 'â€”';
+  document.getElementById('resCurrentLoc').textContent = latest ? latest.location : '—';
 
   renderProgress(status);
   renderTimeline(s.updates || []);
@@ -463,11 +463,11 @@ function statusPill(status) {
 }
 
 function fmtDate(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   try { return new Date(d).toLocaleDateString('en-US', { weekday:'short', month:'long', day:'numeric', year:'numeric' }); } catch { return d; }
 }
 function fmtDateTime(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   try { return new Date(d).toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit' }); } catch { return d; }
 }
 function esc(s) {
