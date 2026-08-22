@@ -196,6 +196,9 @@
     background-repeat: no-repeat;
     transform: scale(1.04);
     transition: transform 8s ease;
+    /* sharpening filter — compensates partially for low-res upscaling */
+    filter: contrast(1.12) saturate(1.08);
+    image-rendering: -webkit-optimize-contrast;
   }
 
   .hero-bg-image.loaded { transform: scale(1); }
