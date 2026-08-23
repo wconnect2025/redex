@@ -337,29 +337,53 @@ async function trackPackage() {
   btn.innerHTML = '<span class="spinner"></span>';
   btn.disabled  = true;
 
-  try {
-    const res = await fetch('/api/shipments/' + encodeURIComponent(raw));
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT_MS   = 8000;
+  let lastError      = null;
 
-    if (res.ok) {
-      const shipment = await res.json();
-      showResult(shipment, raw);
-    } else if (res.status === 404) {
-      showNotFound(raw);
-    } else {
-      showNotFound(raw);
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+      const res = await fetch('/api/shipments/' + encodeURIComponent(raw), {
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+
+      if (res.ok) {
+        const shipment = await res.json();
+        showResult(shipment, raw);
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Track`;
+        btn.disabled = false;
+        return;
+      }
+
+      if (res.status === 404) {
+        showNotFound(raw);
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Track`;
+        btn.disabled = false;
+        return;
+      }
+
+      // Server error — retry
+      lastError = 'server';
+    } catch {
+      // Network / timeout error — retry
+      lastError = 'network';
     }
-  } catch {
-    // Network error — show a helpful message
-    document.getElementById('idleState').style.display    = 'none';
-    document.getElementById('notFoundState').style.display = 'none';
-    document.getElementById('resultSection').classList.remove('show');
 
-    const el = document.getElementById('notFoundState');
-    el.style.display = 'block';
-    document.getElementById('notFoundTN').textContent = raw;
-    document.querySelector('#notFoundState .state-title').textContent = 'Could not reach tracking service';
-    document.querySelector('#notFoundState .state-sub').innerHTML = 'Please check your connection. If this keeps happening, the site may not be deployed yet.';
+    // Short delay before retrying (skip delay on last attempt)
+    if (attempt < MAX_ATTEMPTS) await new Promise(r => setTimeout(r, 800 * attempt));
   }
+
+  // All attempts failed — show appropriate message
+  document.getElementById('idleState').style.display     = 'none';
+  document.getElementById('notFoundState').style.display = 'block';
+  document.getElementById('resultSection').classList.remove('show');
+  document.getElementById('notFoundTN').textContent = raw;
+  document.querySelector('#notFoundState .state-title').textContent = 'Could not reach tracking service';
+  document.querySelector('#notFoundState .state-sub').innerHTML = 'We tried a few times but couldn\'t connect. Please check your internet connection and try again in a moment.';
 
   btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Track`;
   btn.disabled  = false;

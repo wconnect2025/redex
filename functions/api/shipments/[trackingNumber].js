@@ -38,7 +38,18 @@ export async function onRequestGet({ params, env }) {
   if (err) return err;
 
   const tn = (params.trackingNumber || '').toUpperCase();
-  const shipment = await env.REDEX_KV.get('shipment:' + tn, { type: 'json' });
+
+  // Retry KV read up to 3 times to handle transient failures
+  let shipment = null;
+  for (let i = 0; i < 3; i++) {
+    try {
+      shipment = await env.REDEX_KV.get('shipment:' + tn, { type: 'json' });
+      break;
+    } catch {
+      if (i === 2) return json({ error: 'Tracking service temporarily unavailable. Please try again.' }, 503);
+      await new Promise(r => setTimeout(r, 300));
+    }
+  }
 
   if (!shipment) return json({ error: 'Shipment not found' }, 404);
   return json(shipment);
