@@ -10,8 +10,8 @@ const DEFAULTS = {
   namePart1:    'Red',
   namePart2:    'Ex',
   tagline:      'Courier Services',
-  primaryColor: '#4D148C',
-  accentColor:  '#FF6600',
+  primaryColor: '#0A2463',
+  accentColor:  '#E63946',
   phone:        '+1 (800) 555-1234',
   email:        'support@redex.com',
 };

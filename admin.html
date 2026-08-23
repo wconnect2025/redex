@@ -9,11 +9,11 @@
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --purple: #4D148C;
-    --purple-dark: #2d0a52;
-    --purple-light: #6b2aa8;
-    --orange: #FF6600;
-    --orange-light: #FF8533;
+    --purple: #0A2463;
+    --purple-dark: #061540;
+    --purple-light: #1a3a7a;
+    --orange: #E63946;
+    --orange-light: #FF6B75;
     --blue: #0066B3;
     --green: #16a34a;
     --red: #dc2626;
@@ -35,7 +35,7 @@
   /* ===== LOGIN ===== */
   .login-overlay {
     position: fixed; inset: 0; z-index: 9999;
-    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, #8e3bbf 100%);
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 60%, #2a5298 100%);
     display: flex; align-items: center; justify-content: center;
   }
 
@@ -64,7 +64,7 @@
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     border-color: var(--purple); background: #fff;
-    box-shadow: 0 0 0 4px rgba(77,20,140,0.08);
+    box-shadow: 0 0 0 4px rgba(10,36,99,0.08);
   }
   .form-group textarea { resize: vertical; min-height: 90px; }
 
@@ -75,7 +75,7 @@
     cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
     display: flex; align-items: center; justify-content: center; gap: 10px;
   }
-  .btn-primary:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(77,20,140,0.35); }
+  .btn-primary:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(10,36,99,0.35); }
   .btn-primary:disabled { opacity: 0.65; cursor: not-allowed; }
 
   .login-error { color: var(--red); font-size: 13px; font-weight: 500; margin-top: 12px; display: none; }
@@ -129,8 +129,8 @@
 
   .stat-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stat-icon svg { width: 24px; height: 24px; }
-  .stat-icon.purple { background: rgba(77,20,140,0.1);  } .stat-icon.purple svg { stroke: var(--purple); }
-  .stat-icon.orange { background: rgba(255,102,0,0.1);  } .stat-icon.orange svg { stroke: var(--orange); }
+  .stat-icon.purple { background: rgba(10,36,99,0.1);  } .stat-icon.purple svg { stroke: var(--purple); }
+  .stat-icon.orange { background: rgba(230,57,70,0.1);  } .stat-icon.orange svg { stroke: var(--orange); }
   .stat-icon.green  { background: rgba(22,163,74,0.1);  } .stat-icon.green  svg { stroke: var(--green);  }
   .stat-icon.blue   { background: rgba(0,102,179,0.1);  } .stat-icon.blue   svg { stroke: var(--blue);   }
 
@@ -153,8 +153,8 @@
   .tracking-gen-box { display: flex; align-items: center; gap: 12px; background: var(--bg); border: 2px dashed var(--purple); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
   .tracking-gen-box .tn { font-size: 22px; font-weight: 800; color: var(--purple); letter-spacing: 2px; flex: 1; }
   .btn-icon   { padding: 10px 16px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
-  .btn-regen  { background: rgba(77,20,140,0.08); color: var(--purple); }
-  .btn-regen:hover { background: rgba(77,20,140,0.15); }
+  .btn-regen  { background: rgba(10,36,99,0.08); color: var(--purple); }
+  .btn-regen:hover { background: rgba(10,36,99,0.15); }
   .btn-copy   { background: var(--purple); color: #fff; }
   .btn-copy:hover { background: var(--purple-dark); }
   .btn-copy.copied { background: var(--green); }
@@ -165,18 +165,18 @@
     font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s;
     display: flex; align-items: center; gap: 10px;
   }
-  .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(77,20,140,0.3); }
+  .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(10,36,99,0.3); }
   .btn-submit:disabled { opacity: 0.65; cursor: not-allowed; }
   .btn-submit svg { width: 18px; height: 18px; }
 
   .btn-danger { padding: 8px 16px; background: rgba(220,38,38,0.1); color: var(--red); border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: var(--red); color: #fff; }
 
-  .btn-edit { padding: 8px 16px; background: rgba(77,20,140,0.08); color: var(--purple); border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-edit { padding: 8px 16px; background: rgba(10,36,99,0.08); color: var(--purple); border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s; }
   .btn-edit:hover { background: var(--purple); color: #fff; }
 
-  .btn-secondary { padding: 14px 28px; background: rgba(77,20,140,0.08); color: var(--purple); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
-  .btn-secondary:hover { background: rgba(77,20,140,0.15); }
+  .btn-secondary { padding: 14px 28px; background: rgba(10,36,99,0.08); color: var(--purple); border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary:hover { background: rgba(10,36,99,0.15); }
 
   /* ===== TABLE ===== */
   .table-wrap { overflow-x: auto; }
@@ -184,7 +184,7 @@
   thead th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; background: #fafafa; border-bottom: 1px solid var(--border); }
   tbody td { padding: 14px 16px; font-size: 13.5px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: rgba(77,20,140,0.02); }
+  tbody tr:hover { background: rgba(10,36,99,0.02); }
   .tn-cell { font-weight: 700; color: var(--purple); font-family: monospace; font-size: 14px; letter-spacing: 1px; }
 
   /* ===== STATUS BADGES ===== */
@@ -192,8 +192,8 @@
   .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
   .badge-placed     { background: rgba(0,102,179,0.1);  color: var(--blue);   } .badge-placed::before     { background: var(--blue);   }
   .badge-processing { background: rgba(217,119,6,0.1);  color: var(--yellow); } .badge-processing::before { background: var(--yellow); }
-  .badge-transit    { background: rgba(77,20,140,0.1);  color: var(--purple); } .badge-transit::before    { background: var(--purple); animation: blink 1.5s infinite; }
-  .badge-delivery   { background: rgba(255,102,0,0.1);  color: var(--orange); } .badge-delivery::before   { background: var(--orange); animation: blink 1s infinite;   }
+  .badge-transit    { background: rgba(10,36,99,0.1);  color: var(--purple); } .badge-transit::before    { background: var(--purple); animation: blink 1.5s infinite; }
+  .badge-delivery   { background: rgba(230,57,70,0.1);  color: var(--orange); } .badge-delivery::before   { background: var(--orange); animation: blink 1s infinite;   }
   .badge-delivered  { background: rgba(22,163,74,0.1);  color: var(--green);  } .badge-delivered::before  { background: var(--green);  }
   .badge-exception  { background: rgba(220,38,38,0.1);  color: var(--red);    } .badge-exception::before  { background: var(--red);    }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
@@ -201,7 +201,7 @@
   /* ===== SEARCH ===== */
   .search-row   { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; }
   .search-input { flex: 1; padding: 11px 16px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; transition: all 0.2s; }
-  .search-input:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(77,20,140,0.08); }
+  .search-input:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(10,36,99,0.08); }
 
   /* ===== ALERTS ===== */
   .alert { padding: 14px 20px; border-radius: 10px; font-size: 14px; font-weight: 500; margin-bottom: 20px; display: none; align-items: center; gap: 10px; }
@@ -248,14 +248,14 @@
   .shipment-select-list { max-height: 200px; overflow-y: auto; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 16px; }
   .shipment-select-item { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
   .shipment-select-item:last-child { border-bottom: none; }
-  .shipment-select-item:hover    { background: rgba(77,20,140,0.04); }
-  .shipment-select-item.selected { background: rgba(77,20,140,0.07); }
+  .shipment-select-item:hover    { background: rgba(10,36,99,0.04); }
+  .shipment-select-item.selected { background: rgba(10,36,99,0.07); }
   .shipment-select-item .ssi-tn   { font-weight: 700; color: var(--purple); font-family: monospace; font-size: 14px; }
   .shipment-select-item .ssi-info { font-size: 12px; color: var(--muted); }
 
   /* ===== LOADING SPINNER ===== */
   .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-  .spinner-dark { border-color: rgba(77,20,140,0.2); border-top-color: var(--purple); }
+  .spinner-dark { border-color: rgba(10,36,99,0.2); border-top-color: var(--purple); }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* ===== SKELETON LOADER ===== */
@@ -504,7 +504,7 @@
           <div class="card-body">
             <input type="text" class="search-input" id="updateSearchInput" placeholder="Search tracking # or name…" oninput="filterUpdateList()" style="margin-bottom:14px;">
             <div class="shipment-select-list" id="updateShipmentList"></div>
-            <div id="selectedShipmentInfo" style="display:none;margin-top:16px;padding:14px;background:rgba(77,20,140,0.05);border-radius:10px;border:1px solid rgba(77,20,140,0.15);">
+            <div id="selectedShipmentInfo" style="display:none;margin-top:16px;padding:14px;background:rgba(10,36,99,0.05);border-radius:10px;border:1px solid rgba(10,36,99,0.15);">
               <div style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Selected</div>
               <div id="selectedTNDisplay" style="font-size:18px;font-weight:800;color:var(--purple);font-family:monospace;letter-spacing:1px;"></div>
               <div id="selectedRecipDisplay" style="font-size:13px;color:var(--text2);margin-top:4px;"></div>
@@ -585,15 +585,15 @@
             <div class="form-group">
               <label>Primary Colour</label>
               <div style="display:flex;gap:10px;align-items:center;">
-                <input type="color" id="brandPrimary" value="#4D148C" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Primary')">
-                <input type="text" id="brandPrimaryHex" placeholder="#4D148C" maxlength="7" oninput="syncColorFromHex('Primary')" style="flex:1;font-family:monospace;letter-spacing:1px;">
+                <input type="color" id="brandPrimary" value="#0A2463" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Primary')">
+                <input type="text" id="brandPrimaryHex" placeholder="#0A2463" maxlength="7" oninput="syncColorFromHex('Primary')" style="flex:1;font-family:monospace;letter-spacing:1px;">
               </div>
             </div>
             <div class="form-group">
               <label>Accent Colour</label>
               <div style="display:flex;gap:10px;align-items:center;">
-                <input type="color" id="brandAccent" value="#FF6600" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Accent')">
-                <input type="text" id="brandAccentHex" placeholder="#FF6600" maxlength="7" oninput="syncColorFromHex('Accent')" style="flex:1;font-family:monospace;letter-spacing:1px;">
+                <input type="color" id="brandAccent" value="#E63946" style="width:54px;height:44px;border:2px solid var(--border);border-radius:8px;padding:3px;cursor:pointer;background:#fff;" oninput="syncColorFromPicker('Accent')">
+                <input type="text" id="brandAccentHex" placeholder="#E63946" maxlength="7" oninput="syncColorFromHex('Accent')" style="flex:1;font-family:monospace;letter-spacing:1px;">
               </div>
             </div>
           </div>
@@ -1116,9 +1116,9 @@ function viewShipment(tn) {
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
-      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Service</div><div style="font-weight:700;margin-top:4px;">${esc(s.serviceType)}</div></div>
-      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weight</div><div style="font-weight:700;margin-top:4px;">${esc(s.weight)} kg</div></div>
-      <div style="padding:12px;background:rgba(77,20,140,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">ETA</div><div style="font-weight:700;margin-top:4px;">${fmtDate(s.estimatedDelivery)}</div></div>
+      <div style="padding:12px;background:rgba(10,36,99,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Service</div><div style="font-weight:700;margin-top:4px;">${esc(s.serviceType)}</div></div>
+      <div style="padding:12px;background:rgba(10,36,99,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">Weight</div><div style="font-weight:700;margin-top:4px;">${esc(s.weight)} kg</div></div>
+      <div style="padding:12px;background:rgba(10,36,99,0.05);border-radius:8px;text-align:center;"><div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">ETA</div><div style="font-weight:700;margin-top:4px;">${fmtDate(s.estimatedDelivery)}</div></div>
     </div>
     <div style="margin-bottom:20px;"><div style="font-weight:600;margin-bottom:6px;">Package: ${esc(s.description)}</div>${s.notes ? `<div style="font-size:13px;color:var(--text2);">${esc(s.notes)}</div>` : ''}</div>
     <div style="font-size:14px;font-weight:700;margin-bottom:12px;">Tracking History</div>
@@ -1267,15 +1267,15 @@ function populateSettingsForm(s) {
   set('brandPart1',      s.namePart1    || 'Red');
   set('brandPart2',      s.namePart2    || 'Ex');
   set('brandTagline',    s.tagline      || 'Courier Services');
-  set('brandPrimaryHex', s.primaryColor || '#4D148C');
-  set('brandAccentHex',  s.accentColor  || '#FF6600');
+  set('brandPrimaryHex', s.primaryColor || '#0A2463');
+  set('brandAccentHex',  s.accentColor  || '#E63946');
   set('brandPhone',      s.phone        || '');
   set('brandEmail',      s.email        || '');
 
   const pp = document.getElementById('brandPrimary');
   const pa = document.getElementById('brandAccent');
-  if (pp) pp.value = s.primaryColor || '#4D148C';
-  if (pa) pa.value = s.accentColor  || '#FF6600';
+  if (pp) pp.value = s.primaryColor || '#0A2463';
+  if (pa) pa.value = s.accentColor  || '#E63946';
 
   updateLogoPreview();
 }
@@ -1298,7 +1298,7 @@ function updateLogoPreview() {
   const p1  = document.getElementById('brandPart1')?.value  || 'Red';
   const p2  = document.getElementById('brandPart2')?.value  || 'Ex';
   const tl  = document.getElementById('brandTagline')?.value || '';
-  const col = document.getElementById('brandAccentHex')?.value || '#FF6600';
+  const col = document.getElementById('brandAccentHex')?.value || '#E63946';
   const prv = document.getElementById('logoPreview');
   const tprv= document.getElementById('taglinePreview');
   if (prv)  prv.innerHTML = `${esc(p1)}<span style="color:${esc(col)};">${esc(p2)}</span>`;
@@ -1311,14 +1311,14 @@ async function saveSettings() {
     namePart1:    g('brandPart1')      || 'Red',
     namePart2:    g('brandPart2')      || 'Ex',
     tagline:      g('brandTagline')    || 'Courier Services',
-    primaryColor: g('brandPrimaryHex') || '#4D148C',
-    accentColor:  g('brandAccentHex')  || '#FF6600',
+    primaryColor: g('brandPrimaryHex') || '#0A2463',
+    accentColor:  g('brandAccentHex')  || '#E63946',
     phone:        g('brandPhone'),
     email:        g('brandEmail'),
   };
 
   if (!/^#[0-9a-fA-F]{6}$/.test(settings.primaryColor) || !/^#[0-9a-fA-F]{6}$/.test(settings.accentColor)) {
-    showAlert('settingsErr','settingsErrMsg','Please enter valid hex colours (e.g. #4D148C).','error');
+    showAlert('settingsErr','settingsErrMsg','Please enter valid hex colours (e.g. #0A2463).','error');
     return;
   }
 
