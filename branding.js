@@ -16,7 +16,7 @@
       root.style.setProperty('--orange', s.accentColor);
     }
 
-    const p1 = esc(s.namePart1 || 'Red');
+    const p1 = esc(s.namePart1 || 'Send');
     const p2 = esc(s.namePart2 || 'Ex');
 
     // Update every navbar logo and footer logo on the page
@@ -26,7 +26,7 @@
 
     // Update browser tab title
     const title = document.title;
-    document.title = title.replace(/^Red\s*Ex/i, (s.namePart1 || 'Red') + (s.namePart2 || 'Ex'));
+    document.title = title.replace(/^Send\s*Ex/i, (s.namePart1 || 'Send') + (s.namePart2 || 'Ex'));
 
   } catch (_) { /* fail silently — default branding stays */ }
 

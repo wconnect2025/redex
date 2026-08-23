@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RedEx Admin Dashboard</title>
+<title>SendEx Admin Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -271,7 +271,7 @@
 <!-- ===== LOGIN OVERLAY ===== -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <div class="login-logo">Red<span>Ex</span></div>
+    <div class="login-logo">Send<span>Ex</span></div>
     <div class="login-sub">Admin Portal</div>
     <div class="login-title">Sign in to your dashboard</div>
     <div class="form-group">
@@ -292,7 +292,7 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-logo">Red<span>Ex</span><span class="sidebar-badge">Admin Dashboard</span></div>
+    <div class="sidebar-logo">Send<span>Ex</span><span class="sidebar-badge">Admin Dashboard</span></div>
     <nav>
       <div class="nav-item active" onclick="showTab('overview',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -678,7 +678,7 @@ function api(path, opts = {}) {
 //  INIT
 // ========================================================
 window.addEventListener('DOMContentLoaded', () => {
-  const saved = sessionStorage.getItem('redex_admin_key');
+  const saved = sessionStorage.getItem('sendex_admin_key');
   if (saved) {
     adminKey = saved;
     // Silently verify the saved key still works
@@ -692,7 +692,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function clearSession() {
-  sessionStorage.removeItem('redex_admin_key');
+  sessionStorage.removeItem('sendex_admin_key');
   adminKey = '';
 }
 
@@ -714,7 +714,7 @@ async function doLogin() {
 
     if (res.ok) {
       adminKey = pass;
-      sessionStorage.setItem('redex_admin_key', pass);
+      sessionStorage.setItem('sendex_admin_key', pass);
       document.getElementById('loginOverlay').style.display = 'none';
       showApp();
     } else {
@@ -1247,7 +1247,7 @@ function applyBranding(s) {
   }
   if (s.accentColor)  root.style.setProperty('--orange', s.accentColor);
 
-  const p1 = s.namePart1 || 'Red';
+  const p1 = s.namePart1 || 'Send';
   const p2 = s.namePart2 || 'Ex';
 
   // Update sidebar logo
@@ -1264,7 +1264,7 @@ function applyBranding(s) {
 
 function populateSettingsForm(s) {
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-  set('brandPart1',      s.namePart1    || 'Red');
+  set('brandPart1',      s.namePart1    || 'Send');
   set('brandPart2',      s.namePart2    || 'Ex');
   set('brandTagline',    s.tagline      || 'Courier Services');
   set('brandPrimaryHex', s.primaryColor || '#0A2463');
@@ -1295,7 +1295,7 @@ function syncColorFromHex(which) {
 }
 
 function updateLogoPreview() {
-  const p1  = document.getElementById('brandPart1')?.value  || 'Red';
+  const p1  = document.getElementById('brandPart1')?.value  || 'Send';
   const p2  = document.getElementById('brandPart2')?.value  || 'Ex';
   const tl  = document.getElementById('brandTagline')?.value || '';
   const col = document.getElementById('brandAccentHex')?.value || '#E63946';
@@ -1308,7 +1308,7 @@ function updateLogoPreview() {
 async function saveSettings() {
   const g = id => document.getElementById(id)?.value.trim() || '';
   const settings = {
-    namePart1:    g('brandPart1')      || 'Red',
+    namePart1:    g('brandPart1')      || 'Send',
     namePart2:    g('brandPart2')      || 'Ex',
     tagline:      g('brandTagline')    || 'Courier Services',
     primaryColor: g('brandPrimaryHex') || '#0A2463',
